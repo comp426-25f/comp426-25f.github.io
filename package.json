@@ -38,6 +38,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.2",
     "husky": "^9.1.7",
+    "jiti": "^2.5.0",
     "mdast-util-toc": "^7.1.0",
     "rehype": "^13.0.2",
     "rehype-autolink-headings": "^7.1.0",
