@@ -1,62 +1,33 @@
 import { notFound } from "next/navigation"
-import { allDocs } from "contentlayer/generated"
+import { allSupplements } from "contentlayer/generated"
 
 import { getTableOfContents } from "@/lib/toc"
-import { Mdx } from "@/components/mdx-components"
+import { Mdx } from "@/components/mdx/mdx-components"
 import { DocsPageHeader } from "@/components/docs-header"
 import { DashboardTableOfContents } from "@/components/toc"
 
 import "@/styles/mdx.css"
 import { Metadata } from "next"
-
-type Params = { 
-  slug: string[]
-}
-
-type DocPageProps = {
-  params: Params
-}
-
-async function getDocFromParams(params: Params) {
-  const slug = params.slug?.join("/") || ""
-  const doc = allDocs.find((doc) => doc.slugAsParams === slug)
-
-  if (!doc) {
-    null
-  }
-
-  return doc
-}
+import { ContentPageProps, ContentParams, generateMetadataForContent, generateStaticParamsForContent, getContentFromParams } from "@/lib/content"
 
 export async function generateMetadata({
   params,
-}: DocPageProps): Promise<Metadata> {
-  const doc = await getDocFromParams(params)
-
-  if (!doc) {
-    return {}
-  }
-
-  return {
-    title: doc.title,
-    description: doc.description,
-  }
+}: ContentPageProps): Promise<Metadata> {
+  const doc = await getContentFromParams(allSupplements, params)
+  return generateMetadataForContent(doc)
 }
 
 export async function generateStaticParams(): Promise<
-  DocPageProps["params"][]
+  ContentParams[]
 > {
-  return allDocs.map((doc) => ({
-    slug: doc.slugAsParams.split("/"),
-  }))
+  return generateStaticParamsForContent(allSupplements)
 }
 
-export default async function DocPage({ params }: DocPageProps) {
-  const doc = await getDocFromParams(params)
+export default async function SupplementPage({ params }: ContentPageProps) {
 
-  if (!doc) {
-    notFound()
-  }
+  const doc = await getContentFromParams(allSupplements, params)
+
+  if (!doc) notFound()
 
   const toc = await getTableOfContents(doc.body.raw)
 

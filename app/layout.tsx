@@ -5,7 +5,8 @@ import type { Metadata } from "next";
 import "@/styles/globals.css"
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
-import { siteConfig } from "@/config/site";
+import { SiteFooter } from "@/components/site-footer";
+import ContentLayout from "@/components/layouts/content-layout";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,8 +21,8 @@ const fontHeading = localFont({
 
 
 export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
+  title: "COMP 426 (F'25)",
+  description: "Course website for the Fall 2025 offering of COMP 426: Modern Web Programming @ UNC-Chapel Hill.",
   authors: [
     {
       name: "Ajay Gandecha",
@@ -47,7 +48,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <div className="flex min-h-screen flex-col">
+            <div className="container flex-1">
+              <ContentLayout>{ children }</ContentLayout>
+            </div>
+            <SiteFooter className="border-t" />
+          </div>
         </ThemeProvider>
       </body>
     </html>

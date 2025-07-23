@@ -4,6 +4,7 @@ import rehypePrettyCode from "rehype-pretty-code"
 import rehypeSlug from "rehype-slug"
 import remarkGfm from "remark-gfm"
 
+/** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields = {
   slug: {
     type: "string",
@@ -15,9 +16,29 @@ const computedFields = {
   },
 }
 
-export const Doc = defineDocumentType(() => ({
-  name: "Doc",
-  filePathPattern: `docs/**/*.mdx`,
+export const Page = defineDocumentType(() => ({
+  name: "Page",
+  filePathPattern: `pages/**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      required: true,
+    },
+    description: {
+      type: "string",
+    },
+    showToc: {
+      type: "boolean",
+      default: false,
+    }
+  },
+  computedFields,
+}))
+
+export const Reading = defineDocumentType(() => ({
+  name: "Reading",
+  filePathPattern: `readings/**/*.mdx`,
   contentType: "mdx",
   fields: {
     title: {
@@ -35,10 +56,49 @@ export const Doc = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const Assignment = defineDocumentType(() => ({
+  name: "Assignment",
+  filePathPattern: `assignments/**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      required: true,
+    },
+    description: {
+      type: "string",
+    },
+    published: {
+      type: "boolean",
+      default: true,
+    },
+  },
+  computedFields,
+}))
+
+export const Supplement = defineDocumentType(() => ({
+  name: "Supplement",
+  filePathPattern: `supplements/**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      required: true,
+    },
+    description: {
+      type: "string",
+    },
+    published: {
+      type: "boolean",
+      default: true,
+    },
+  },
+  computedFields,
+}))
 
 export default makeSource({
   contentDirPath: "./content",
-  documentTypes: [Doc],
+  documentTypes: [Page, Reading, Assignment, Supplement],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

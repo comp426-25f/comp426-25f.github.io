@@ -6,7 +6,7 @@ import Image from "next/image"
 import { useMDXComponent } from "next-contentlayer2/hooks"
 import { cn } from "@/lib/utils"
 import { Callout } from "@/components/callout"
-import { MdxCard } from "@/components/mdx-card"
+import { MdxCard } from "@/components/mdx/mdx-card"
 
 const components: MDXComponents = {
   h1: ({ className, ...props }) => (
