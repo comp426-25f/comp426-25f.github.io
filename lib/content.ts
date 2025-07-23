@@ -2,8 +2,8 @@ import {
   Page,
   Reading,
   Assignment,
-  Supplement,
-} from "@/.contentlayer/generated";
+  Supplement
+} from '@/.contentlayer/generated';
 
 export type ContentParams = {
   slug: string[];
@@ -19,7 +19,7 @@ export async function getContentFromParams<ContentType extends Content>(
   allContent: ContentType[],
   params: ContentParams
 ): Promise<ContentType | null> {
-  const slug = params.slug?.join("/") || "";
+  const slug = params.slug?.join('/') || '';
   const content = allContent.find((content) => content.slugAsParams === slug);
 
   return content || null;
@@ -31,7 +31,7 @@ export async function generateMetadataForContent<ContentType extends Content>(
   return content
     ? {
         title: content.title,
-        description: content.description,
+        description: content.description
       }
     : {};
 }
@@ -40,6 +40,6 @@ export async function generateStaticParamsForContent<
   ContentType extends Content
 >(allContent: ContentType[]): Promise<ContentParams[]> {
   return allContent.map((content) => ({
-    slug: content.slugAsParams.split("/"),
+    slug: content.slugAsParams.split('/')
   }));
 }

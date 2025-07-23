@@ -1,23 +1,23 @@
-import { notFound } from "next/navigation";
-import { allSupplements } from "contentlayer/generated";
+import { notFound } from 'next/navigation';
+import { allSupplements } from 'contentlayer/generated';
 
-import { getTableOfContents } from "@/lib/toc";
-import { Mdx } from "@/components/mdx/mdx-components";
-import { DocsPageHeader } from "@/components/docs-header";
-import { DashboardTableOfContents } from "@/components/toc";
+import { getTableOfContents } from '@/lib/toc';
+import { Mdx } from '@/components/mdx/mdx-components';
+import { DocsPageHeader } from '@/components/docs-header';
+import { DashboardTableOfContents } from '@/components/toc';
 
-import "@/styles/mdx.css";
-import { Metadata } from "next";
+import '@/styles/mdx.css';
+import { Metadata } from 'next';
 import {
   ContentPageProps,
   ContentParams,
   generateMetadataForContent,
   generateStaticParamsForContent,
-  getContentFromParams,
-} from "@/lib/content";
+  getContentFromParams
+} from '@/lib/content';
 
 export async function generateMetadata({
-  params,
+  params
 }: ContentPageProps): Promise<Metadata> {
   const doc = await getContentFromParams(allSupplements, params);
   return generateMetadataForContent(doc);
