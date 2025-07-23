@@ -1,5 +1,5 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
   return (
@@ -9,7 +9,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           <p className="text-center text-sm leading-loose md:text-left">
             Built by{" "}
             <a
-              href={'https://ajaygandecha.com'}
+              href={"https://ajaygandecha.com"}
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
@@ -20,5 +20,5 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
         </div>
       </div>
     </footer>
-  )
+  );
 }

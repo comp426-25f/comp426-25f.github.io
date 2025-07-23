@@ -1,35 +1,38 @@
-import { notFound } from "next/navigation"
-import { allSupplements } from "contentlayer/generated"
+import { notFound } from "next/navigation";
+import { allSupplements } from "contentlayer/generated";
 
-import { getTableOfContents } from "@/lib/toc"
-import { Mdx } from "@/components/mdx/mdx-components"
-import { DocsPageHeader } from "@/components/docs-header"
-import { DashboardTableOfContents } from "@/components/toc"
+import { getTableOfContents } from "@/lib/toc";
+import { Mdx } from "@/components/mdx/mdx-components";
+import { DocsPageHeader } from "@/components/docs-header";
+import { DashboardTableOfContents } from "@/components/toc";
 
-import "@/styles/mdx.css"
-import { Metadata } from "next"
-import { ContentPageProps, ContentParams, generateMetadataForContent, generateStaticParamsForContent, getContentFromParams } from "@/lib/content"
+import "@/styles/mdx.css";
+import { Metadata } from "next";
+import {
+  ContentPageProps,
+  ContentParams,
+  generateMetadataForContent,
+  generateStaticParamsForContent,
+  getContentFromParams,
+} from "@/lib/content";
 
 export async function generateMetadata({
   params,
 }: ContentPageProps): Promise<Metadata> {
-  const doc = await getContentFromParams(allSupplements, params)
-  return generateMetadataForContent(doc)
+  const doc = await getContentFromParams(allSupplements, params);
+  return generateMetadataForContent(doc);
 }
 
-export async function generateStaticParams(): Promise<
-  ContentParams[]
-> {
-  return generateStaticParamsForContent(allSupplements)
+export async function generateStaticParams(): Promise<ContentParams[]> {
+  return generateStaticParamsForContent(allSupplements);
 }
 
 export default async function SupplementPage({ params }: ContentPageProps) {
+  const doc = await getContentFromParams(allSupplements, params);
 
-  const doc = await getContentFromParams(allSupplements, params)
+  if (!doc) notFound();
 
-  if (!doc) notFound()
-
-  const toc = await getTableOfContents(doc.body.raw)
+  const toc = await getTableOfContents(doc.body.raw);
 
   return (
     <main className="relative py-6 lg:gap-10 lg:py-10 xl:grid xl:grid-cols-[1fr_300px]">
@@ -44,5 +47,5 @@ export default async function SupplementPage({ params }: ContentPageProps) {
         </div>
       </div>
     </main>
-  )
+  );
 }
