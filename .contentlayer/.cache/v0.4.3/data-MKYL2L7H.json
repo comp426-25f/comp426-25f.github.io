@@ -1,0 +1,54 @@
+{
+  "cacheItemsMap": {
+    "docs/components.mdx": {
+      "document": {
+        "title": "Components",
+        "description": "Use React components in Markdown using MDX.",
+        "published": true,
+        "body": {
+          "raw": "\nThe following components are available out of the box for use in Markdown.\n\nIf you'd like to build and add your own custom components, see the [Custom Components](#custom-components) section below.\n\n## Built-in Components\n\n### 1. Callout\n\n```mdx\n<Callout type=\" default | warning | danger \">\n\nThis is a default callout. You can embed **Markdown** inside a `callout`.\n\n</Callout>\n```\n\n",
+          "code": "var Component=(()=>{var p=Object.create;var t=Object.defineProperty;var u=Object.getOwnPropertyDescriptor;var m=Object.getOwnPropertyNames;var E=Object.getPrototypeOf,g=Object.prototype.hasOwnProperty;var y=(a,n)=>()=>(n||a((n={exports:{}}).exports,n),n.exports),f=(a,n)=>{for(var o in n)t(a,o,{get:n[o],enumerable:!0})},i=(a,n,o,r)=>{if(n&&typeof n==\"object\"||typeof n==\"function\")for(let l of m(n))!g.call(a,l)&&l!==o&&t(a,l,{get:()=>n[l],enumerable:!(r=u(n,l))||r.enumerable});return a};var b=(a,n,o)=>(o=a!=null?p(E(a)):{},i(n||!a||!a.__esModule?t(o,\"default\",{value:a,enumerable:!0}):o,a)),C=a=>i(t({},\"__esModule\",{value:!0}),a);var s=y((w,c)=>{c.exports=_jsx_runtime});var F={};f(F,{default:()=>h,frontmatter:()=>x});var e=b(s()),x={title:\"Components\",description:\"Use React components in Markdown using MDX.\"};function d(a){let n={a:\"a\",code:\"code\",figure:\"figure\",h2:\"h2\",h3:\"h3\",p:\"p\",pre:\"pre\",span:\"span\",...a.components};return(0,e.jsxs)(e.Fragment,{children:[(0,e.jsx)(n.p,{children:\"The following components are available out of the box for use in Markdown.\"}),`\n`,(0,e.jsxs)(n.p,{children:[\"If you'd like to build and add your own custom components, see the \",(0,e.jsx)(n.a,{href:\"#custom-components\",children:\"Custom Components\"}),\" section below.\"]}),`\n`,(0,e.jsxs)(n.h2,{id:\"built-in-components\",children:[(0,e.jsx)(n.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#built-in-components\",children:(0,e.jsx)(n.span,{className:\"icon icon-link\"})}),\"Built-in Components\"]}),`\n`,(0,e.jsxs)(n.h3,{id:\"1-callout\",children:[(0,e.jsx)(n.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#1-callout\",children:(0,e.jsx)(n.span,{className:\"icon icon-link\"})}),\"1. Callout\"]}),`\n`,(0,e.jsx)(n.figure,{\"data-rehype-pretty-code-figure\":\"\",children:(0,e.jsx)(n.pre,{style:{backgroundColor:\"#24292e\",color:\"#e1e4e8\"},tabIndex:\"0\",\"data-language\":\"mdx\",\"data-theme\":\"github-dark\",children:(0,e.jsxs)(n.code,{\"data-language\":\"mdx\",\"data-theme\":\"github-dark\",style:{display:\"grid\"},children:[(0,e.jsx)(n.span,{\"data-line\":\"\",children:(0,e.jsx)(n.span,{style:{color:\"#E1E4E8\"},children:'<Callout type=\" default | warning | danger \">'})}),`\n`,(0,e.jsx)(n.span,{\"data-line\":\"\",children:\" \"}),`\n`,(0,e.jsxs)(n.span,{\"data-line\":\"\",children:[(0,e.jsx)(n.span,{style:{color:\"#E1E4E8\"},children:\"This is a default callout. You can embed \"}),(0,e.jsx)(n.span,{style:{color:\"#9ECBFF\"},children:\"**\"}),(0,e.jsx)(n.span,{style:{color:\"#E1E4E8\"},children:\"Markdown\"}),(0,e.jsx)(n.span,{style:{color:\"#9ECBFF\"},children:\"**\"}),(0,e.jsx)(n.span,{style:{color:\"#E1E4E8\"},children:\" inside a \"}),(0,e.jsx)(n.span,{style:{color:\"#9ECBFF\"},children:\"`\"}),(0,e.jsx)(n.span,{style:{color:\"#79B8FF\"},children:\"callout\"}),(0,e.jsx)(n.span,{style:{color:\"#9ECBFF\"},children:\"`\"}),(0,e.jsx)(n.span,{style:{color:\"#E1E4E8\"},children:\".\"})]}),`\n`,(0,e.jsx)(n.span,{\"data-line\":\"\",children:\" \"}),`\n`,(0,e.jsx)(n.span,{\"data-line\":\"\",children:(0,e.jsx)(n.span,{style:{color:\"#E1E4E8\"},children:\"</Callout>\"})})]})})})]})}function h(a={}){let{wrapper:n}=a.components||{};return n?(0,e.jsx)(n,{...a,children:(0,e.jsx)(d,{...a})}):d(a)}return C(F);})();\n;return Component;"
+        },
+        "_id": "docs/components.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/components.mdx",
+          "sourceFileName": "components.mdx",
+          "sourceFileDir": "docs",
+          "contentType": "mdx",
+          "flattenedPath": "docs/components"
+        },
+        "type": "Doc",
+        "slug": "/docs/components",
+        "slugAsParams": "components"
+      },
+      "documentHash": "1753228284911",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    },
+    "docs/index.mdx": {
+      "document": {
+        "title": "Documentation",
+        "description": "Welcome to the Taxonomy documentation.",
+        "published": true,
+        "body": {
+          "raw": "\nThis is the documentation for the Taxonomy site.\n\nThis is an example of a doc site built using [ContentLayer](/docs/documentation/contentlayer) and MDX.\n\n<Callout>\n\nThis site is a work in progress. If you see dummy text on a page, it means I'm still working on it. You can follow updates on Twitter [@shadcn](https://twitter.com/shadcn).\n\n</Callout>\n\n## Features\n\nSelect a feature below to learn more about it.\n\n<div className=\"grid sm:grid-cols-2 gap-4 mt-6\">\n\n<Card href=\"/docs/documentation\">\n\n### Documentation\n\nThis documentation site built using Contentlayer.\n\n</Card>\n\n<Card href=\"/docs/marketing\" disabled>\n\n### Marketing\n\nThe marketing site with landing pages.\n\n</Card>\n\n<Card href=\"/docs/app\" disabled>\n\n### App\n\nThe dashboard with auth and subscriptions.\n\n</Card>\n\n<Card href=\"/docs/blog\" disabled>\n\n### Blog\n\nThe blog built using Contentlayer and MDX.\n\n</Card>\n\n</div>\n",
+          "code": "var Component=(()=>{var u=Object.create;var r=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var g=Object.getOwnPropertyNames;var f=Object.getPrototypeOf,b=Object.prototype.hasOwnProperty;var k=(i,e)=>()=>(e||i((e={exports:{}}).exports,e),e.exports),x=(i,e)=>{for(var a in e)r(i,a,{get:e[a],enumerable:!0})},s=(i,e,a,t)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let o of g(e))!b.call(i,o)&&o!==a&&r(i,o,{get:()=>e[o],enumerable:!(t=p(e,o))||t.enumerable});return i};var w=(i,e,a)=>(a=i!=null?u(f(i)):{},s(e||!i||!i.__esModule?r(a,\"default\",{value:i,enumerable:!0}):a,i)),y=i=>s(r({},\"__esModule\",{value:!0}),i);var l=k((_,c)=>{c.exports=_jsx_runtime});var T={};x(T,{default:()=>m,frontmatter:()=>N});var n=w(l()),N={title:\"Documentation\",description:\"Welcome to the Taxonomy documentation.\"};function d(i){let e={a:\"a\",h2:\"h2\",h3:\"h3\",p:\"p\",span:\"span\",...i.components},{Callout:a,Card:t}=e;return a||h(\"Callout\",!0),t||h(\"Card\",!0),(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.p,{children:\"This is the documentation for the Taxonomy site.\"}),`\n`,(0,n.jsxs)(e.p,{children:[\"This is an example of a doc site built using \",(0,n.jsx)(e.a,{href:\"/docs/documentation/contentlayer\",children:\"ContentLayer\"}),\" and MDX.\"]}),`\n`,(0,n.jsx)(a,{children:(0,n.jsxs)(e.p,{children:[\"This site is a work in progress. If you see dummy text on a page, it means I'm still working on it. You can follow updates on Twitter \",(0,n.jsx)(e.a,{href:\"https://twitter.com/shadcn\",children:\"@shadcn\"}),\".\"]})}),`\n`,(0,n.jsxs)(e.h2,{id:\"features\",children:[(0,n.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#features\",children:(0,n.jsx)(e.span,{className:\"icon icon-link\"})}),\"Features\"]}),`\n`,(0,n.jsx)(e.p,{children:\"Select a feature below to learn more about it.\"}),`\n`,(0,n.jsxs)(\"div\",{className:\"grid sm:grid-cols-2 gap-4 mt-6\",children:[(0,n.jsxs)(t,{href:\"/docs/documentation\",children:[(0,n.jsxs)(e.h3,{id:\"documentation\",children:[(0,n.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#documentation\",children:(0,n.jsx)(e.span,{className:\"icon icon-link\"})}),\"Documentation\"]}),(0,n.jsx)(e.p,{children:\"This documentation site built using Contentlayer.\"})]}),(0,n.jsxs)(t,{href:\"/docs/marketing\",disabled:!0,children:[(0,n.jsxs)(e.h3,{id:\"marketing\",children:[(0,n.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#marketing\",children:(0,n.jsx)(e.span,{className:\"icon icon-link\"})}),\"Marketing\"]}),(0,n.jsx)(e.p,{children:\"The marketing site with landing pages.\"})]}),(0,n.jsxs)(t,{href:\"/docs/app\",disabled:!0,children:[(0,n.jsxs)(e.h3,{id:\"app\",children:[(0,n.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#app\",children:(0,n.jsx)(e.span,{className:\"icon icon-link\"})}),\"App\"]}),(0,n.jsx)(e.p,{children:\"The dashboard with auth and subscriptions.\"})]}),(0,n.jsxs)(t,{href:\"/docs/blog\",disabled:!0,children:[(0,n.jsxs)(e.h3,{id:\"blog\",children:[(0,n.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#blog\",children:(0,n.jsx)(e.span,{className:\"icon icon-link\"})}),\"Blog\"]}),(0,n.jsx)(e.p,{children:\"The blog built using Contentlayer and MDX.\"})]})]})]})}function m(i={}){let{wrapper:e}=i.components||{};return e?(0,n.jsx)(e,{...i,children:(0,n.jsx)(d,{...i})}):d(i)}function h(i,e){throw new Error(\"Expected \"+(e?\"component\":\"object\")+\" `\"+i+\"` to be defined: you likely forgot to import, pass, or provide it.\")}return y(T);})();\n;return Component;"
+        },
+        "_id": "docs/index.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/index.mdx",
+          "sourceFileName": "index.mdx",
+          "sourceFileDir": "docs",
+          "contentType": "mdx",
+          "flattenedPath": "docs"
+        },
+        "type": "Doc",
+        "slug": "/docs",
+        "slugAsParams": ""
+      },
+      "documentHash": "1753208279839",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    }
+  }
+}
