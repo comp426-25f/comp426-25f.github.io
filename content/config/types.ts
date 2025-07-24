@@ -18,14 +18,6 @@ export const Page = defineContentType({
     showToc: {
       type: 'boolean',
       default: false
-    },
-    authors: {
-      // Reference types are not embedded.
-      // Until this is fixed, we can use a simple list.
-      // type: "reference",
-      // of: Author,
-      type: "list",
-      of: { type: "string" },
     }
   }
 });

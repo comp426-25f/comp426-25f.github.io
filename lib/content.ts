@@ -4,6 +4,9 @@ import {
   Assignment,
   Supplement
 } from '@/.contentlayer/generated';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import React from 'react';
 
 export type ContentParams = {
   slug: string[];
@@ -13,7 +16,7 @@ export type ContentPageProps = {
   params: ContentParams;
 };
 
-type Content = Page | Reading | Assignment | Supplement;
+export type Content = Page | Reading | Assignment | Supplement;
 
 export async function getContentFromParams<ContentType extends Content>(
   allContent: ContentType[],
@@ -49,4 +52,34 @@ export async function generateStaticParamsForContent<
   return allContent.map((content) => ({
     slug: content.slugAsParams.split('/')
   }));
+}
+
+//---
+
+export function generateNextjsContentPage<ContentType extends Content>(
+  allContent: ContentType[],
+  contentLayout: (doc: ContentType) => React.ReactNode
+) {
+  async function generateMetadata({
+    params
+  }: ContentPageProps): Promise<Metadata> {
+    const doc = await getContentFromParams(allContent, params);
+    return generateMetadataForContent(doc);
+  }
+
+  async function generateStaticParams(): Promise<ContentParams[]> {
+    return generateStaticParamsForContent(allContent);
+  }
+
+  async function ContentPage({ params }: ContentPageProps) {
+    const doc = await getContentFromParams(allContent, params);
+    if (!doc) notFound();
+    return contentLayout(doc);
+  }
+
+  return {
+    generateMetadata,
+    generateStaticParams,
+    ContentPage
+  };
 }

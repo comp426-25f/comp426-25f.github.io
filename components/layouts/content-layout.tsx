@@ -1,49 +1,37 @@
-'use client';
+import React from 'react';
+import { Mdx } from '../mdx/mdx-components';
+import { Content } from '@/lib/content';
+import { DashboardTableOfContents } from '../toc';
+import { getTableOfContents } from '@/lib/toc';
 
-import Link from 'next/link';
-import { Button } from '../ui/button';
-import { ChevronLeft } from 'lucide-react';
-import { usePathname } from 'next/dist/client/components/navigation';
-import { cn } from '@/lib/utils';
+type ContentLayoutProps = {
+  header: React.ReactNode;
+  showToc?: boolean;
+  doc: Content;
+};
 
-export default function ContentLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
-  const pathname = usePathname();
-  const showBackButton = pathname !== '/';
+export default async function ContentLayout({
+  header,
+  showToc = true,
+  doc
+}: ContentLayoutProps) {
+  const toc = await getTableOfContents(doc.body.raw);
 
   return (
-    <div className="flex flex-row w-full flex-1 justify-center">
-      {showBackButton && (
-        <aside className="hidden lg:flex flex-row w-[200px] my-12 relative">
-          <Button variant="ghost" asChild className="absolute top-0 right-0">
-            <Link href="/">
-              <ChevronLeft className="size-4" />
-              Back
-            </Link>
-          </Button>
-        </aside>
-      )}
-      {children}
-    </div>
-  );
-  return (
-    <div className="flex-1 md:grid md:grid-cols-[220px_1fr] md:gap-6 lg:grid-cols-[240px_1fr] lg:gap-10">
-      <aside className="lg:py-12 w-full flex flex-row justify-center">
-        {showBackButton && (
-          <div className="hidden lg:block">
-            <Button variant="ghost" asChild>
-              <Link href="/">
-                <ChevronLeft className="size-4" />
-                Back to home
-              </Link>
-            </Button>
+    <main className="flex lg:gap-10 overflow-hidden lg:overflow-visible">
+      <div className="min-w-0 w-full max-w-3xl px-8 py-10">
+        {header}
+        <div className="min-w-0">
+          <Mdx code={doc.body.code} />
+        </div>
+      </div>
+      {showToc && (
+        <div className="min-w-[300px] text-sm hidden lg:block flex-shrink-0">
+          <div className="sticky top-16 -mt-10 max-h-[calc(var(--vh)-4rem)] overflow-y-auto pt-10">
+            <DashboardTableOfContents toc={toc} />
           </div>
-        )}
-      </aside>
-      {children}
-    </div>
+        </div>
+      )}
+    </main>
   );
 }
