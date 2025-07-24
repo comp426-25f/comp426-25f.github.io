@@ -31,7 +31,7 @@ export function AssignmentsList() {
   const displayedItems = showAll ? allItems : upcomingItems;
 
   return (
-    <div className="flex flex-col w-full gap-1 py-2 mt-1">
+    <div className="flex flex-col w-full gap-3 md:gap-1 py-2 mt-1">
       {allItems.length === 0 && (
         <p className="text-muted-foreground mt-2">No upcoming assignments!</p>
       )}

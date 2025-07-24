@@ -87,6 +87,10 @@ export const Supplement = defineContentType({
   filePathPattern: `supplements/**/*.mdx`,
   contentType: 'mdx',
   fields: {
+    code: {
+      type: 'string',
+      required: true
+    },
     title: {
       type: 'string',
       required: true
@@ -97,6 +101,9 @@ export const Supplement = defineContentType({
     published: {
       type: 'boolean',
       default: true
+    },
+    publishedDate: {
+      type: 'date'
     },
     authors: {
       // Reference types are not embedded.
@@ -135,10 +142,41 @@ export const Author = defineContentType({
   }
 });
 
+export const ScheduleItem = defineContentType({
+  name: 'ScheduleItem',
+  filePathPattern: `schedule/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    date: {
+      type: 'date',
+      required: true
+    },
+    subject: {
+      type: 'string',
+      required: true
+    },
+    code: {
+      type: 'string',
+      required: true
+    },
+    title: {
+      type: 'string',
+      required: true
+    },
+    recordingUrl: {
+      type: 'string'
+    },
+    slideshowUrl: {
+      type: 'string'
+    }
+  }
+});
+
 export const allContentTypes = [
   Page,
   Reading,
   Assignment,
   Supplement,
-  Author
+  Author,
+  ScheduleItem
 ]

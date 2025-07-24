@@ -11,6 +11,9 @@ import { Button } from '@/components/ui/button';
 import { ScrollText, Users, BookText, Clock } from 'lucide-react';
 import HomepageButton from '@/components/home/homepage-button';
 import { AssignmentsList } from '@/components/home/assignments-list';
+import { SupplementsList } from '@/components/home/supplements-list';
+import { ScheduleHeader } from '@/components/home/schedule-header';
+import { Schedule } from '@/components/home/schedule';
 
 const components: MDXComponents = {
   h1: ({ className, ...props }) => (
@@ -162,7 +165,10 @@ const components: MDXComponents = {
   Users,
   BookText,
   Clock,
-  AssignmentsList
+  AssignmentsList,
+  SupplementsList,
+  ScheduleHeader,
+  Schedule
 };
 
 interface MdxProps {

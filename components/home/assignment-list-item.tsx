@@ -1,7 +1,6 @@
 'use client';
 
 import { Assignment, Reading } from '@/.contentlayer/generated';
-import { Badge } from '../ui/badge';
 import { DueStatus, dueStatus, formatDateFromString } from '@/lib/date';
 import { useRouter } from 'next/navigation';
 import { AssignmentBadge } from './assignment-badge';
@@ -15,19 +14,19 @@ export function AssignmentListItem({ item }: { item: AssignmentListItemType }) {
 
   const dueElement = (due: string) => {
     return itemDueStatus === 'past' ? (
-      <p className="ml-auto text-sm text-rose-500">
+      <p className="md:ml-auto text-sm text-rose-500">
         Due: {formatDateFromString(due)}
       </p>
     ) : itemDueStatus === 'tonight' ? (
-      <p className="ml-auto text-sm text-rose-500">
+      <p className="md:ml-auto text-sm text-rose-500">
         Due tonight: {formatDateFromString(due)}
       </p>
     ) : itemDueStatus === 'soon' ? (
-      <p className="ml-auto text-sm text-amber-600">
+      <p className="md:ml-auto text-sm text-amber-600">
         Due soon: {formatDateFromString(due)}
       </p>
     ) : (
-      <p className="ml-auto text-sm text-muted-foreground">
+      <p className="md:ml-auto text-sm text-muted-foreground">
         Due: {formatDateFromString(due)}
       </p>
     );
@@ -42,8 +41,10 @@ export function AssignmentListItem({ item }: { item: AssignmentListItemType }) {
       )}
       onClick={() => router.push(`/${item._raw.flattenedPath}`)}>
       <AssignmentBadge code={item.code} />
-      <p className="font-semibold pb-0.5">{item.title}</p>
-      {item.due && dueElement(item.due)}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full">
+        <p className="font-semibold pb-0.5">{item.title}</p>
+        {item.due && dueElement(item.due)}
+      </div>
     </div>
   );
 }

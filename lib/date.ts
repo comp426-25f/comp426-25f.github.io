@@ -9,6 +9,11 @@ export const formatDateFromString = (dateString: string): string => {
   return format(date, 'EEE MMM d @ h:mm a');
 };
 
+export const formatShortDateFromString = (dateString: string): string => {
+  const date = dateFromString(dateString);
+  return format(date, 'MMM d');
+};
+
 export type DueStatus = 'past' | 'tonight' | 'soon' | 'regular';
 
 export const dueStatus = (dateString: string): DueStatus => {
