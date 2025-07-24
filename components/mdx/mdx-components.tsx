@@ -7,6 +7,10 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { cn } from '@/lib/utils';
 import { Callout } from '@/components/callout';
 import { MdxCard } from '@/components/mdx/mdx-card';
+import { Button } from '@/components/ui/button';
+import { ScrollText, Users, BookText, Clock } from 'lucide-react';
+import HomepageButton from '@/components/home/homepage-button';
+import { AssignmentsList } from '@/components/home/assignments-list';
 
 const components: MDXComponents = {
   h1: ({ className, ...props }) => (
@@ -151,7 +155,14 @@ const components: MDXComponents = {
   ),
   Image,
   Callout,
-  Card: MdxCard
+  Card: MdxCard,
+  Button,
+  HomepageButton,
+  ScrollText,
+  Users,
+  BookText,
+  Clock,
+  AssignmentsList
 };
 
 interface MdxProps {

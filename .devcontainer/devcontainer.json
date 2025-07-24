@@ -13,7 +13,8 @@
                 "matthewpi.caddyfile-support",
                 "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode",
-                "ckolkman.vscode-postgres"
+                "ckolkman.vscode-postgres",
+                "bradlc.vscode-tailwindcss"
             ],
             "settings": {
                 "editor.formatOnSave": true,

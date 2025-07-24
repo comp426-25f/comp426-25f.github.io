@@ -27,6 +27,10 @@ export const Reading = defineContentType({
   filePathPattern: `readings/**/*.mdx`,
   contentType: 'mdx',
   fields: {
+    code: {
+      type: 'string',
+      required: true
+    },
     title: {
       type: 'string',
       required: true
@@ -37,6 +41,9 @@ export const Reading = defineContentType({
     published: {
       type: 'boolean',
       default: true
+    },
+    due: {
+      type: 'date',
     },
     authors: {
       // Reference types are not embedded.
@@ -54,6 +61,10 @@ export const Assignment = defineContentType({
   filePathPattern: `assignments/**/*.mdx`,
   contentType: 'mdx',
   fields: {
+    code: {
+      type: 'string',
+      required: true
+    },
     title: {
       type: 'string',
       required: true
@@ -64,6 +75,9 @@ export const Assignment = defineContentType({
     published: {
       type: 'boolean',
       default: true
+    },
+    due: {
+      type: 'date',
     }
   }
 });
