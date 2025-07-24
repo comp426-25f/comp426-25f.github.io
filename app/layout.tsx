@@ -29,11 +29,7 @@ export const metadata: Metadata = {
       url: 'https://ajaygandecha.com'
     }
   ],
-  creator: 'Ajay Gandecha',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' }
-  ]
+  creator: 'Ajay Gandecha'
 };
 
 export default function RootLayout({
@@ -52,10 +48,10 @@ export default function RootLayout({
         )}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
-            <div className="container flex-1">
+            <div className="container lg:px-0 xl:px-8 flex-1">
               <ContentLayout>{children}</ContentLayout>
             </div>
-            <SiteFooter className="border-t" />
+            <SiteFooter />
           </div>
         </ThemeProvider>
       </body>

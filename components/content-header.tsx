@@ -1,23 +1,25 @@
 import { cn } from '@/lib/utils';
 
 interface DocsPageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  heading: string;
-  text?: string;
+  title: string;
+  headline?: string;
 }
 
-export function DocsPageHeader({
-  heading,
-  text,
+export function ContentHeader({
+  title,
+  headline,
   className,
   ...props
 }: DocsPageHeaderProps) {
   return (
     <>
-      <div className={cn('space-y-4 mb-8', className)} {...props}>
+      <div className={cn('mb-8', className)} {...props}>
+        {headline && (
+          <p className="mb-2 text-sm text-muted-foreground">{headline}</p>
+        )}
         <h1 className="inline-block font-heading text-4xl md:text-5xl">
-          {heading}
+          {title}
         </h1>
-        {text && <p className="text-xl text-muted-foreground">{text}</p>}
       </div>
       {/* <hr className="my-4" /> */}
     </>
