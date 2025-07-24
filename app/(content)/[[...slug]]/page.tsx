@@ -38,7 +38,15 @@ export default async function SitePage({ params }: ContentPageProps) {
   return (
     <main className="flex lg:gap-10 overflow-hidden lg:overflow-visible">
       <div className="min-w-0 w-full max-w-3xl px-8 py-10">
-        <ContentHeader title={doc.title} headline="Due on Mon Apr 9, 2025" />
+        <ContentHeader
+          title={doc.title}
+          headlineElement={
+            <p className="mb-2 text-sm text-muted-foreground">
+              Due on Mon Apr 9, 2025
+            </p>
+          }
+          authors={doc.authors}
+        />
         <div className="min-w-0">
           <Mdx code={doc.body.code} />
         </div>

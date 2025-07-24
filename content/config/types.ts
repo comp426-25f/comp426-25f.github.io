@@ -2,6 +2,7 @@
 // by contentlayer, which runs from a different bundle.
 import { defineContentType } from '../../lib/contentlayer';
 
+
 export const Page = defineContentType({
   name: 'Page',
   filePathPattern: `pages/**/*.mdx`,
@@ -17,6 +18,14 @@ export const Page = defineContentType({
     showToc: {
       type: 'boolean',
       default: false
+    },
+    authors: {
+      // Reference types are not embedded.
+      // Until this is fixed, we can use a simple list.
+      // type: "reference",
+      // of: Author,
+      type: "list",
+      of: { type: "string" },
     }
   }
 });
@@ -36,6 +45,14 @@ export const Reading = defineContentType({
     published: {
       type: 'boolean',
       default: true
+    },
+    authors: {
+      // Reference types are not embedded.
+      // Until this is fixed, we can use a simple list.
+      // type: "reference",
+      // of: Author,
+      type: "list",
+      of: { type: "string" },
     }
   }
 });
@@ -74,6 +91,48 @@ export const Supplement = defineContentType({
     published: {
       type: 'boolean',
       default: true
+    },
+    authors: {
+      // Reference types are not embedded.
+      // Until this is fixed, we can use a simple list.
+      // type: "reference",
+      // of: Author,
+      type: "list",
+      of: { type: "string" },
     }
   }
 });
+
+// Note: Author content is not a page, but this is required for contentlayer
+// to recognize it as a content type.
+export const Author = defineContentType({
+  name: "Author",
+  filePathPattern: `authors/**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    name: {
+      type: "string",
+      required: true,
+    },
+    abbreviation: {
+      type: "string",
+      required: true,
+    },
+    avatar: {
+      type: "string",
+      required: true,
+    },
+    github: {
+      type: "string",
+      required: true,
+    },
+  }
+});
+
+export const allContentTypes = [
+  Page,
+  Reading,
+  Assignment,
+  Supplement,
+  Author
+]

@@ -4,11 +4,11 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import type { Element } from 'hast';
-import { Assignment, Page, Reading, Supplement } from './content/config/types';
+import { allContentTypes } from './content/config/types';
 
 export default makeSource({
   contentDirPath: './content',
-  documentTypes: [Page, Reading, Assignment, Supplement],
+  documentTypes: allContentTypes,
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
