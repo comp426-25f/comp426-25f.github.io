@@ -6,7 +6,6 @@ import '@/styles/globals.css';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/theme-provider';
 import { SiteFooter } from '@/components/site-footer';
-import SiteLayout from '@/components/layouts/site-layout';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -48,9 +47,7 @@ export default function RootLayout({
         )}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
-            <div className="container lg:px-0 xl:px-8 flex-1">
-              <SiteLayout>{children}</SiteLayout>
-            </div>
+            <div className="container lg:px-0 xl:px-8 flex-1">{children}</div>
             <SiteFooter />
           </div>
         </ThemeProvider>
