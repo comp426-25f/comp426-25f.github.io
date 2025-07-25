@@ -15,7 +15,7 @@ export function ScheduleHeader() {
       <div className="flex flex-row flex-wrap items-center gap-4 py-2">
         {legendItem('lightblue', 'Fundamentals')}
         {legendItem('blue', 'React')}
-        {legendItem('lavendar', 'Next.js')}
+        {legendItem('purple', 'Next.js')}
         {legendItem('green', 'Backend')}
         {legendItem('pink', 'Design')}
         {legendItem('yellow', 'Technologies')}

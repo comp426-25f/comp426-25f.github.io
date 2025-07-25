@@ -16,7 +16,7 @@ export function SupplementListItem({ item }: { item: Supplement }) {
         'flex flex-row items-center gap-3 px-2 py-1 h-10 rounded-md hover:bg-accent hover:cursor-pointer'
       )}
       onClick={() => router.push(`/${item._raw.flattenedPath}`)}>
-      <ColoredBadge text={item.code} color="lavendar" />
+      <ColoredBadge text={item.code} color="purple" />
       <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full">
         <p className="font-semibold pb-0.5">{item.title}</p>
         {item.publishedDate && (
