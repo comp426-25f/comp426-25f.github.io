@@ -14,6 +14,7 @@ import { AssignmentsList } from '@/components/home/assignments-list';
 import { SupplementsList } from '@/components/home/supplements-list';
 import { ScheduleHeader } from '@/components/home/schedule-header';
 import { Schedule } from '@/components/home/schedule';
+import { TeamMember } from '@/components/team-member';
 
 const components: MDXComponents = {
   h1: ({ className, ...props }) => (
@@ -83,10 +84,10 @@ const components: MDXComponents = {
     />
   ),
   ul: ({ className, ...props }) => (
-    <ul className={cn('my-6 ml-6 list-disc', className)} {...props} />
+    <ul className={cn('mt-2 mb-6 ml-6 list-disc', className)} {...props} />
   ),
   ol: ({ className, ...props }) => (
-    <ol className={cn('my-6 ml-6 list-decimal', className)} {...props} />
+    <ol className={cn('mt-2 mb-6 ml-6 list-decimal', className)} {...props} />
   ),
   li: ({ className, ...props }) => (
     <li className={cn('mt-2', className)} {...props} />
@@ -168,7 +169,8 @@ const components: MDXComponents = {
   AssignmentsList,
   SupplementsList,
   ScheduleHeader,
-  Schedule
+  Schedule,
+  TeamMember
 };
 
 interface MdxProps {

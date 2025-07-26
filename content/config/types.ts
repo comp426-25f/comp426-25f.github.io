@@ -40,7 +40,7 @@ export const Reading = defineContentType({
     },
     published: {
       type: 'boolean',
-      default: true
+      required: true
     },
     due: {
       type: 'date',
@@ -74,7 +74,7 @@ export const Assignment = defineContentType({
     },
     published: {
       type: 'boolean',
-      default: true
+      required: true
     },
     due: {
       type: 'date',
@@ -100,7 +100,7 @@ export const Supplement = defineContentType({
     },
     published: {
       type: 'boolean',
-      default: true
+      required: true
     },
     publishedDate: {
       type: 'date'

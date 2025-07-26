@@ -14,11 +14,11 @@ export function ScheduleHeader() {
       </h2>
       <div className="flex flex-row flex-wrap items-center gap-4 py-2">
         {legendItem('lightblue', 'Fundamentals')}
-        {legendItem('blue', 'React')}
+        {/* {legendItem('blue', 'React')}
         {legendItem('purple', 'Next.js')}
         {legendItem('green', 'Backend')}
         {legendItem('pink', 'Design')}
-        {legendItem('yellow', 'Technologies')}
+        {legendItem('yellow', 'Technologies')} */}
       </div>
     </div>
   );

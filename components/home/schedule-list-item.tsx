@@ -16,7 +16,7 @@ export function ScheduleListItem({ item }: { item: ScheduleItem }) {
         'flex flex-row items-center gap-3 px-2 py-1 rounded-md w-full'
       )}>
       <div className="flex flex-row items-center sm:justify-end gap-3 sm:w-[164px]">
-        <p className="hidden sm:block text-sm">
+        <p className="hidden sm:block text-sm text-muted-foreground">
           {format(item.date, 'EEE MMM d')}
         </p>
         <ScheduleBadge item={item} />

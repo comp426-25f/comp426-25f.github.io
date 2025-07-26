@@ -3,6 +3,9 @@ import '@/styles/mdx.css';
 import { generateNextjsContentPage } from '@/lib/content';
 import { ContentHeader } from '@/components/content-header';
 import ContentLayout from '@/components/layouts/content-layout';
+import { AssignmentBadge } from '@/components/home/assignment-badge';
+import { DueText } from '@/components/home/due-text';
+import { dueStatus } from '@/lib/date';
 
 const {
   generateMetadata,
@@ -14,9 +17,16 @@ const {
       <ContentHeader
         title={doc.title}
         headlineElement={
-          <p className="mb-2 text-sm text-muted-foreground">
-            Due on Mon Apr 9, 2025
-          </p>
+          <div className="flex flex-row items-center mb-2 gap-3">
+            <AssignmentBadge code={doc.code} />
+            {doc.due && (
+              <DueText
+                itemDueStatus={dueStatus(doc.due)}
+                due={doc.due}
+                className="text-sm"
+              />
+            )}
+          </div>
         }
       />
     }
