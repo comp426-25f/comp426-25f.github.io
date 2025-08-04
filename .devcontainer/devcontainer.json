@@ -14,7 +14,8 @@
                 "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode",
                 "ckolkman.vscode-postgres",
-                "bradlc.vscode-tailwindcss"
+                "bradlc.vscode-tailwindcss",
+                "unifiedjs.vscode-mdx"
             ],
             "settings": {
                 "editor.formatOnSave": true,

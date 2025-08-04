@@ -52,7 +52,10 @@ export function ContentHeader({
           </>
         ) : (
           <h1
-            className={cn('inline-block font-heading', 'text-4xl md:text-5xl')}>
+            className={cn(
+              'inline-block font-heading mt-2',
+              'text-4xl md:text-5xl'
+            )}>
             {title}
           </h1>
         )}

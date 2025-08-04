@@ -11,7 +11,7 @@ authors:
 
 COMP 426: Modern Web Programming will focus on creating **websites** and **web applications**. We will use a lot of advanced tools throughout the course - but the most fundamental tools of web development are **HTML** and **CSS**.
 
-The files that make up websites are stored on *servers* - computers on the internet that store large amounts of files and "serves" them to users who request them. When you navigate to a website, say the course website (`https://comp426-25s.github.io/`), your browser sends a request across the internet to the server that stores the website's files. The server then sends the files to the browser, which renders the website for you to see. The files that the server sends back to the browser have specific jobs.
+The files that make up websites are stored on *servers* - computers on the internet that store large amounts of files and "serves" them to users who request them. When you navigate to a website, say the course website (`https://comp426-25f.github.io/`), your browser sends a request across the internet to the server that stores the website's files. The server then sends the files to the browser, which renders the website for you to see. The files that the server sends back to the browser have specific jobs.
 
 Think about any website you visit on the internet. We can break every website into three fundamental parts:
 1. **Content**: All webpages have content - this includes text, images, links, etc. that you see on the website.
@@ -26,7 +26,7 @@ The different files that the browser receives from the server provide these thre
 
 Below on the left is a sample HTML file. On the right is the website it produces:
 
-<div className="flex flex-col md:flex-row w-full my-6">
+<div className="flex flex-col md:flex-row w-full">
     <div className="w-full md:w-[48%]">
         ```html title="index.html"
         <!DOCTYPE html>
@@ -42,9 +42,19 @@ Below on the left is a sample HTML file. On the right is the website it produces
         ```
     </div>
     <div className="rounded-xl border border-border ml-0 md:ml-[4%] w-full md:w-[48%] h-[314px] p-0 md:p-1 mt-0 md:mt-[53px]">
-        <img src="/images/content/r01/website-01.png" style={{ "height" : "260px" }}/>
+        <img src="/content/r01/website-01.png" style={{ "height" : "260px" }}/>
     </div>
 </div>
+
+<Callout type="green">
+    <strong>Try it out!</strong><br />
+    <a
+      className='font-medium underline underline-offset-4'
+      href="/content/r01/index.html"
+      download
+    >Click here</a>
+     to download the HTML file above. Then, double-click on the file to open it in your browser. You should see the same webpage as shown on the right-hand side!
+</Callout>
 
 HTML documents are made up of **HTML Elements**. Elements are the essential building blocks of our website and specify items such as headings, paragraphs, images, links, and more.
 
@@ -52,13 +62,13 @@ HTML documents are made up of **HTML Elements**. Elements are the essential buil
 
 Elements are denoted using *tags*. Tags are enclosed in angle brackets (`<` and `>`), and the text between these brackets denotes the element's *type*. There is one opening tag and one closing tag for every element. The closing tag is the same as the opening tag, but with a forward slash (`/`) before the element type. The opening tag denotes the *start* of the element, and the closing tag denotes the *end* of the element. The space between the opening and closing tag represents the *content* of the element.
 
-<img src="/images/content/r01/p-tag.jpeg" />
+<img src="/content/r01/p-tag.jpeg" />
 
 The content of elements may include plain text. For example, as shown in the image above, a paragraph's content would include the paragraph's text. HTML elements can also be **nested** within each other - meaning that another HTML element can be used in the content of another element.
 
-For example, the `<strong>` element is used to denote boldfaced text. For example, we can bold the text "world" in the paragraph above like so:
+The `<strong>` element is used to denote boldfaced text. We can bold the text "world" in the paragraph like so:
 
-```html title="index.html"
+```html
 <p>Hello, <strong>world</strong>!</p>
 ```
 
@@ -66,14 +76,24 @@ In this example, the `<strong>` element is nested within the `<p>` element. The 
 
 HTML elements can also be modified with **attributes**. Attributes provide extra information to change an element's behavior or appearance. For example in HTML, we use the `<a>` anchor element to create links. The *content* of the `<a>` element is the text that will be displayed as a link, rather than the link itself. To add the destination link for a link element, we can attach the `href` attribute to the `<a>` element:
 
-```html title="index.html"
-<a href="https://comp426-25s.github.io/">Click me!</a>
+```html
+<a href="https://comp426-25f.github.io/">Click me!</a>
 ```
 
-This HTML creates the following element: [Click me!](https://comp426-25s.github.io/)
+This HTML creates the following element: [Click me!](https://comp426-25f.github.io/)
 
 Many different types of HTML elements take specific attributes that pertain to their specific purposes. For example, the `<img>` image element takes a `src` attribute that specifies the image's source URL.
 
+<Callout>
+    <strong>Note:</strong><br />
+    We can add comments to our HTML code using the following syntax:
+
+    ```yml
+    <!-- This is a comment -->
+    ```
+    
+    You will see these comments throughout many of the following examples as well as in future files and assignments we will work on in this course.
+</Callout>
 {/* <Alert className="mt-6">
     <AlertTitle className="font-semibold text-base">An Aside:</AlertTitle>
     <AlertDescription>
@@ -113,7 +133,10 @@ HTML files have a specific structure that we must follow in order for the browse
 
 You can see this run live in the browser! Below is an embed of ***StackBlitz***, a tool that allows us to run websites directly in the browser. We will use StackBlitz for many live demos in the future. You can also *edit the site live* and watch it update in real-time!
 
-*Note: The live preview of this website might only work on Chrome-based browsers. Please consider continuing this reading in Chrome if the preview on the right-hand side does not load!*
+<Callout type="yellow">
+    <strong>Note:</strong><br />
+    The live preview of this website *might only work on Chrome-based browsers*. Please consider continuing this reading in Chrome if the preview on the right-hand side does not load!
+</Callout>
 
 <iframe src="https://stackblitz.com/edit/stackblitz-starters-xdjkgrai?embed=1&file=index.html&hideExplorer=1&hideNavigation=1&theme=light" style={{ "width": "100%", "height": "500px", "border": "0", "marginTop" : "12px", "marginBottom" : "12px" }}></iframe>
 
@@ -143,10 +166,10 @@ There are numerous HTML elements that are essential for creating webpages. Below
 
 HTML files can link to other HTML files to load different pages on a website. This is done using the `<a>` link element. By convention, we use the `index.html` file for the homepage of a website. This file is loaded when a user navigates to the website's root URL. For example, if a user navigates to `https://example.com/`, the browser will load the `index.html` file and display it to the user.
 
-For example, if we created another HTML file called `about.html`, we could link to it from the `index.html` file like so:
+For example, if we created another HTML file called `another-page.html`, we could link to it from the `index.html` file like so:
 
-```html title="index.html"
-<a href="another-page.html">Another page</a>
+```html
+<a href="/another-page">Another page</a>
 ```
 
 The project structure would look like this:
@@ -157,48 +180,30 @@ website
 └── another-page.html
 ```
 
-{/* <Alert className="mt-6">
-    <AlertTitle className="font-semibold text-base">Note on File Paths:</AlertTitle>
-    <AlertDescription>
+<Callout>
+    <strong>Note on File Paths:</strong><br />
     The `href` attribute uses **relative paths** to link to other files. In this case, the `href` attribute is set to `another-page.html`, which means that the browser will look for the `another-page.html` file in the same directory as the `index.html` file. If we were instead given the following project structure:
-
-    <CodeBlock language="html">
-    {`website
+    
+    ```md
+    website
     ├── index.html
     └── pages
         └── another-page.html
-    `}
-    </CodeBlock>
-
+    ```
     We would need to update the `href` attribute to look like:
-
-    <div className=" my-6">
-    <Code
-        code=
-    {`<a href="pages/another-page.html">Another page</a>`}
-        language="html"
-        filename="index.html"
-        lightTheme="one-light"
-        darkTheme="one-dark"
-    />
-    </div>
+    
+    ```html
+    <a href="pages/another-page.html">Another page</a>
+    ```
 
     If were inside of `another-page.html` and wanted to link back to `index.html`, we would use the following `href` attribute:
-
-    <div className=" my-6">
-    <Code
-        code=
-    {`<a href="../index.html">Back to Home</a>`}
-        language="html"
-        filename="another-page.html"
-        lightTheme="one-light"
-        darkTheme="one-dark"
-    />
-    </div>    
+    
+    ```html
+    <a href="../index.html">Back to Home</a>
+    ```
 
     *To learn more about relative vs. absolute paths, click [here](https://linuxhandbook.com/absolute-vs-relative-path/?ref=itsfoss.com).*
-    </AlertDescription>
-</Alert> */}
+</Callout>
 
 ## CSS Fundamentals
 
@@ -208,7 +213,7 @@ As you noticed through reading above and also playing around with HTML, the cont
 
 CSS files are denoted with the `.css` file extension and are separate files from the HTML files. We are able to use the `<style>` tag in the `<head>` section of our HTML files and write CSS there, however since our CSS files can be long and include a lot of styling, it is best practice to separate the CSS into its own file. We can then link the CSS file to the HTML file using the `<link>` tag in the `<head>` section of the HTML file like so:
 
-```html title="index.html"
+```html title="index.html"{5-6}
 <!DOCTYPE html>
 <html>
     <head>
@@ -225,7 +230,7 @@ CSS files are denoted with the `.css` file extension and are separate files from
 
 Typically, styles are placed in the `styles.css` file. Here is an example file directory of a project, building on the one from the previous section:
 
-```md
+```md {4}
 website
 ├── index.html
 └── another-page.html
@@ -238,7 +243,7 @@ CSS files contain styling "rules" / rulesets that describe how certain HTML elem
 1. **Selector** - The selector specifies which HTML elements the style should apply to.
 2. **Style Rules** - Following the selector, surrounded by `{ }`, are the style rules that specify how the selected elements should be styled. Style rules consist of a style property and a value, separated by a colon.
 
-<img src="/images/content/r01/css-rule.jpeg" />
+<img src="/content/r01/css-rule.jpeg" />
 
 We can place an entire HTML element as a selector, like we have above with the `h1` element. With this styling rule, ***all*** `h1` elements on the webpage will be styled according to the styling rules.
 
@@ -261,7 +266,7 @@ We then can select all elements that *share the same class* using a the `.class`
 
 <MdxCodeComparison>
     <MdxCodeComparisonColumn>
-    ```html title="index.html"
+    ```html title="index.html" {1-2,7-10}
     <p class="my-class">Sample text!</p>
     <p class="my-class">Another one!</p>
     <p>
@@ -275,7 +280,7 @@ We then can select all elements that *share the same class* using a the `.class`
     ```
     </MdxCodeComparisonColumn>
     <MdxCodeComparisonColumn>
-    ```css title="styles.css"
+    ```css title="styles.css" {6-10}
     /* Styles all p elements */
     p {
         text-align: center;    
@@ -294,8 +299,8 @@ We can also use the `id` attribute to attach a *unique identifier* to HTML eleme
 
 <MdxCodeComparison>
     <MdxCodeComparisonColumn>
-    ```html title="index.html"
-    <p>Sample element!/<p>
+    ```html title="index.html" {2}
+    <p>Sample element!</p>
     <p id="another">Another one!</p>
 
 
@@ -303,7 +308,7 @@ We can also use the `id` attribute to attach a *unique identifier* to HTML eleme
     ```
     </MdxCodeComparisonColumn>
     <MdxCodeComparisonColumn>
-    ```css title="styles.css"
+    ```css title="styles.css" {1-5}
     /* Styles just the second
     paragraph element. */
     #another {
@@ -315,7 +320,7 @@ We can also use the `id` attribute to attach a *unique identifier* to HTML eleme
 
 ### CSS Styles
 
-There are hundreds of different types of CSS styles that can be applied. I recommend checking out [this resource](https://www.w3schools.com/cssref/index.php) to learn more! We will specifically talk about layout-centric styles in lecture.
+There are hundreds of different types of CSS styles that can be applied. I recommend checking out [this resource](https://www.w3schools.com/cssref/index.php) to learn more! You will also learn more about CSS and making layouts with CSS in the first coding assignment.
 
 The basics of CSS are super easy to learn, but since CSS contains a large depth of styling options, it can take time to master. Throughout this course, if you have questions about how to achieve a specific style, we highly recommend checking documentation online or stopping by to office hours - we would love to help!
 
