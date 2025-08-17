@@ -56,10 +56,6 @@ export const Reading = defineContentType({
       // of: Author,
       type: "list",
       of: { type: "string" },
-    },
-    showToc: {
-      type: 'boolean',
-      default: true
     }
   }
 });

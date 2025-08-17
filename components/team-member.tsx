@@ -20,10 +20,10 @@ export function TeamMember({
   personal
 }: TeamMemberProps) {
   return (
-    <div className="flex flex-col md:flex-row gap-5 items-center my-6">
+    <div className="flex flex-col md:flex-row gap-5 items-center my-10 md:my-6">
       <img src={src} alt={name} className="size-32 rounded-xl shadow-lg" />
       <div className="flex flex-col text-center md:text-left">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row w-full justify-center md:justify-normal items-center gap-2">
           <p className="text-xl font-semibold tracking-tight">{name}</p>
           <div className="flex flex-row items-center">
             {website && (
