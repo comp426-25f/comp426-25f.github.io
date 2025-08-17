@@ -15,6 +15,10 @@ import { SupplementsList } from '@/components/home/supplements-list';
 import { ScheduleHeader } from '@/components/home/schedule-header';
 import { Schedule } from '@/components/home/schedule';
 import { TeamMember } from '@/components/team-member';
+import {
+  MdxCodeComparison,
+  MdxCodeComparisonColumn
+} from '@/components/mdx/mdx-code-comparison';
 
 const components: MDXComponents = {
   h1: ({ className, ...props }) => (
@@ -170,7 +174,9 @@ const components: MDXComponents = {
   SupplementsList,
   ScheduleHeader,
   Schedule,
-  TeamMember
+  TeamMember,
+  MdxCodeComparison,
+  MdxCodeComparisonColumn
 };
 
 interface MdxProps {

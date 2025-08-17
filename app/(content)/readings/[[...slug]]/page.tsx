@@ -6,6 +6,7 @@ import ContentLayout from '@/components/layouts/content-layout';
 import { AssignmentBadge } from '@/components/home/assignment-badge';
 import { dueStatus } from '@/lib/date';
 import { DueText } from '@/components/home/due-text';
+import { Button } from '@/components/ui/button';
 
 const {
   generateMetadata,
@@ -31,6 +32,7 @@ const {
         authors={doc.authors}
       />
     }
+    showToc={doc.showToc}
     doc={doc}
     showToc={doc.showToc}
   />

@@ -4,6 +4,7 @@ import { Content } from '@/lib/content';
 import { DashboardTableOfContents } from '../toc';
 import { getTableOfContents } from '@/lib/toc';
 import ContentLayoutBackButtonSection from './content-back-button-section';
+import { ContentLayoutTocSidebar } from './content-layout-toc-sidebar';
 
 type ContentLayoutProps = {
   header: React.ReactNode;
@@ -30,8 +31,10 @@ export default async function ContentLayout({
         </div>
         {showToc && (
           <div className="min-w-[300px] text-sm hidden lg:block flex-shrink-0">
-            <div className="sticky top-16 -mt-10 max-h-[calc(var(--vh)-4rem)] overflow-y-auto pt-10">
+            <div className="sticky top-16 max-h-[calc(100vh-4rem)] pt-8 pb-6 overflow-y-auto scrollbar-hidden">
               <DashboardTableOfContents toc={toc} />
+              {/* extra bottom padding spacer so last item can scroll up fully */}
+              <div aria-hidden="true" className="h-6" />
             </div>
           </div>
         )}
