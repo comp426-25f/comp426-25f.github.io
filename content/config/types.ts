@@ -42,6 +42,10 @@ export const Reading = defineContentType({
       type: 'boolean',
       required: true
     },
+    showToc: {
+      type: 'boolean',
+      default: true
+    },
     due: {
       type: 'date',
     },
