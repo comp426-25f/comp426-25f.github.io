@@ -34,6 +34,7 @@ const {
     }
     showToc={doc.showToc}
     doc={doc}
+    showToc={doc.showToc}
   />
 ));
 
