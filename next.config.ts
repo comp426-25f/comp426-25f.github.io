@@ -16,7 +16,8 @@ const nextConfig: NextConfig = {
     // your project has type errors.
     // !! WARN !!
     ignoreBuildErrors: true
-  }
+  },
+  images: { unoptimized: true }
 };
 
 export default withContentlayer(nextConfig);
