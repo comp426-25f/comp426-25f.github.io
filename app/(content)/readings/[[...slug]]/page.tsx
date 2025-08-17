@@ -32,6 +32,7 @@ const {
       />
     }
     doc={doc}
+    showToc={doc.showToc}
   />
 ));
 
