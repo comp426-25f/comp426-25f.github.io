@@ -1,3 +1,5 @@
+'use client';
+
 import { DueStatus, formatDateFromString } from '@/lib/date';
 import { cn } from '@/lib/utils';
 
