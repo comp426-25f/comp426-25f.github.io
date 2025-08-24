@@ -19,6 +19,8 @@ import {
   MdxCodeComparison,
   MdxCodeComparisonColumn
 } from '@/components/mdx/mdx-code-comparison';
+import { Rubric, RubricItem, RubricSectionHeader } from '../rubric';
+import { ResponsiveIFrame } from '../responsive-iframe';
 
 const components: MDXComponents = {
   h1: ({ className, ...props }) => (
@@ -176,7 +178,11 @@ const components: MDXComponents = {
   Schedule,
   TeamMember,
   MdxCodeComparison,
-  MdxCodeComparisonColumn
+  MdxCodeComparisonColumn,
+  Rubric,
+  RubricItem,
+  RubricSectionHeader,
+  ResponsiveIFrame
 };
 
 interface MdxProps {

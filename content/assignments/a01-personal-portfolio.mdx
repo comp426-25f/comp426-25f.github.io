@@ -1,6 +1,140 @@
 ---
 code: A01
 title: Personal Portfolio
-due: "2025-07-20T23:59:59"
+due: "2025-08-31T23:59:59-04:00"
 published: false
 ---
+
+## Synopsis
+
+In this assignment, you will create a static personal website / portfolio page using HTML and CSS using the techniques you have learned so far in class. You will also have the chance to *deploy* your website so that it is live and accessible on the internet - meaning you can share it with others.
+
+## Prerequisites
+
+This assignment, as well as all others, assumes basic proficiency with using **Git** and **GitHub**. This assignment will be completed and submited via a GitHub repository.
+
+Git is used extensively throughout the UNC Computer Science curriculum and should have been covered in recent iterations of *COMP 211: Systems Fundamentals* and *COMP 301: Foundations of Programming*.
+
+If you are not familiar with Git - no worries! I recommend checking out the Git related lectures and materials taught in last semester's offering of [COMP 290: Essential Tools for Computer Science](https://comp290-24f.github.io). All slides and lecture videos are posted there. If you have any questions, please see the TAs in office hours!
+
+You should be familiar with:
+* Git commits and branching.
+* Git remotes, pushing to / pulling from a Git repository.
+* Git merging and solving merge conflicts.
+
+We also assume that you are up-to-date on all readings and class materials.
+
+Make sure that you have [Visual Studio Code](https://code.visualstudio.com/) installed on your machine. This will be our primary IDE for this course.
+
+## Expectations
+
+In this assignment, you will create a personal website that showcases yourself, your skills, courses you have taken at UNC, and any projects you have worked on! You can think of this almost like a digital resume. Personal websites are a great way to showcase the work you have done and can be a fun way to express yourself creatively. It can also be a launching pad to write blog posts or other content if you wish. 
+
+<Rubric>
+    <RubricSectionHeader title={"Content"} points={40} />
+    <RubricItem points={10}>
+        **Header** section that includes:
+        - Your name
+        - Profile photo
+        - Short bio about yourself
+    </RubricItem>
+    <RubricItem points={10}>
+        **About** section that includes a longer bio about yourself. Include your major and interests (academic and even non-academic!)
+    </RubricItem>
+    <RubricItem points={10}>
+        **Classes** section with some relevant COMP (or other) courses you have taken at UNC. Feel free to include COMP 426!
+    </RubricItem>
+    <RubricItem points={10}>
+        **Skills** section with a list of programming languages, frameworks, tools, etc. that you are familiar with.
+    </RubricItem>
+    <RubricSectionHeader title={"HTML Requirements"} points={20} />
+    <RubricItem points={10}>
+        Your website's HTML includes *metatada* including the website's `<title>` and connects to a `styles.css` file.
+    </RubricItem>
+    <RubricItem points={10}>
+        Your website connects to a styles.css file using the `<link>` tag. To recieve this points, styles must be applied on elements from the CSS file - *styles should not be applied inline as attributes in the HTML directly (i.e., do not use `style=`)*!
+    </RubricItem>
+    <RubricSectionHeader title={"Styling Requirements"} points={20} />
+    <RubricItem points={10}>
+        You utilize a **flexbox** at least once in your CSS.
+        Remember from L02 that flexboxes allow us to create more complex layouts! For practice with flexboxes, check out [S01: Flexbox Practice](/supplements/s01-flexbox-practice).
+    </RubricItem>
+    <RubricItem points={10}>
+        Your website is *visually appealing* and puts in effort including styling with CSS. We recommend trying to have fun with designing here! Create something you would want to show off.
+        - One of the biggest elements to good design involves ***colors***. Finding good matching colors can be hard - but we recommend checking out [this website](https://colorhunt.co) to find a nice color palette! This website also includes *hex codes* that can be applied. We recommend trying to set your site's background color to a lighter tone in the palette, then use darker colors to style text and other elements. If you have color questions, feel free to ask us in office hours! **Please link your chosen palette in a comment in your CSS file.**
+
+        - Another key element to design is ***typography*** - the science of fonts! [Google Fonts](https://fonts.google.com/knowledge) is a terrific resource for both learning about fonts in general (and how to apply different types of fonts where) and finding great fonts to use. On the "Fonts" tab of the site, each font is associated with instructions on how to import this font so you can use it in your website. Press on a font, then "Get font", then "Get embed code". This should provide you with `<link>` tags and CSS classes will allow you to use custom fonts in your project.
+
+        We will have an entire module on design later in the course, where we will dive deeper into colors and typography. For now, feel free to experiment - and ask questions!
+
+        **Grading**
+
+        The COMP 426 staff will assign a rating for each project. The final grade will be determined by the rough average of the ratings, rounded up.
+            - **Great Effort**: Great styling effort has been applied.
+            - **Adaquate Effort**: Baseline styling effort has been applied.
+            - **Low Effort**: Little to no styling effort has been applied.
+
+        *Note: This approach is taken to try and reduce the subjectivity of these styling points from one grader to another.*
+    </RubricItem>
+    <RubricItem points={5}>
+        If you use external resources to help you with CSS and styling your website, please source it in a comment in your CSS file!
+    </RubricItem>
+    <RubricSectionHeader title={"Deployment"} points={20} />
+    <RubricItem points={20}>
+        Your website is deployed using Vercel and is accessible at a URL with the format: `https://a01-personal-porfolio-yourname.vercel.app`.
+    </RubricItem>
+</Rubric>
+
+<Rubric extraCredit>
+    <RubricItem points={5}>
+        The team will recognize an website exceptionally good (in terms of design and content) with an extra credit of 5 points!
+    </RubricItem>
+</Rubric>
+
+## Getting Started
+
+To get started on this assignment, please complete the following steps:
+
+1. Accept the **GitHub Classroom** assignment [here](https://classroom.github.com/a/QYB-Xa8b).
+2. Clone the repository to your local machine. You can either do this by:
+<div className="ml-3">
+    * Using the CLI / Terminal: `git clone <repository-url>`
+    * Using [GitHub Desktop](https://desktop.github.com/download/): Click on the green "Code" button and select "Open with GitHub Desktop".
+</div>
+3. Open the cloned repository in Visual Studio Code.
+4. Create a new HTML file called `index.html` in the root directory of your repository. This will be the main page of your website. You will want to follow the same standard template used in class, which might look something like the following:
+
+    ```html
+    <!DOCTYPE html>
+    <html>
+        <head></head>
+        <body></body>
+    </html>
+    ```
+
+5. Using the rubric items listed above in the **Expectations** section, begin creating the website and adding styling. 
+
+    <Callout type="green">
+        **Note:**<br />
+        Remember that, to view your website as you work on it, you can double-click on `index.html` in your file explorer to open the page in your browser!
+    </Callout>
+
+
+## Deployment
+
+The final step of this project is to deploy it to the web! To do so, we are going to use a platform called [**Vercel**](https://vercel.com/home). Vercel is an industry-grade deployment tool which can *host* websites on their servers so that others can access it live on the internet. Vercel is a great system and is used in industry and by many indie developers and teams alike. Vercel is also the company that manages tools we will use later in this class.
+
+Deploying via Vercel is simple and only requires a few steps. Please follow the video guide below:
+<br />
+<ResponsiveIFrame src={'https://www.youtube.com/embed/TZtoRx8xBqs?si=CICyh6JBMrO1xzIV' } />
+
+The video will also introduce deployment as a concept, expanding on the client-server diagram we have used in class. *Note that this video makes some references to an a00 - that is this assignment! This video was reused from the Spring 2025 semester.*
+
+Please come into [office hours](/office-hours) if you encounter any issues!
+
+## Submission
+
+You will submit your final website to Gradescope. Before submitting, make sure that:
+
+1. All of your changes have been pushed to GitHub. You will be submitting a GitHub repository link - if you do not push your changes, we may get an incomplete version of your website.
+2. Your website is deployed to Vercel and is accessible at the URL following the format: `https://a01-personal-porfolio-yourname.vercel.app`. *Make sure the deployment fork is synced with your assignment repo!*
