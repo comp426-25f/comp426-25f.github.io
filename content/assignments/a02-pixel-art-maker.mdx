@@ -1,0 +1,131 @@
+---
+code: A02
+title: Pixel Art Maker
+due: "2025-09-08T23:59:59-04:00"
+published: false
+---
+
+## Synopsis
+
+In this assignment, you will practice configuring event handlers to add functionality to a pixel art maker app! The app will allow users to draw pixel art on a canvas, switch between tools (pencil and eraser) and colors, and download images. You will also have the chance to deploy the app so that it is live and accessible on the internet.
+
+
+## Prerequisites
+
+You will need to have Docker Desktop installed on your computer. If you do not have these installed, please use the following links to download and install them:
+1. [Docker Desktop](https://www.docker.com/products/docker-desktop)
+    *Make sure to have this app open before getting started!*
+
+Also, please install the Docker DevContainers extension for VS Code. This will allow you to open this project in a Docker DevContainer! Install here: [Docker DevContainers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+Docker is a tool that sets up virtual environments specific to the project you are working on. This ensures that everyone in the class is using the same up-to-date version of Node - ensuring consistency amongst students in the class and (hopefully) to prevent compatibility issues!
+
+## Getting Started
+
+To get started on this assignment, please complete the following steps:
+
+1. Accept the **GitHub Classroom** assignment [here](https://classroom.github.com/a/tLhV7zWW). You may work with at most one other person for this assignment! Both partners must accept the assignment and join the same group in GitHub Classroom. If you choose to work with a partner, you will submit one group submission on GradeScope. Both partners will receive the same grade for the assignment. *Note: Max team size must be 2, no exceptions!*
+2. Clone the repository to your local machine. You can either do this by:
+    - Using the CLI / Terminal: `git clone <repository-url>`
+    - Using [GitHub Desktop](https://desktop.github.com/download/): Click on the green "Code" button and select "Open with GitHub Desktop".
+3. Open the cloned repository in Visual Studio Code.
+4. You will now see a pop-up in the bottom right corner of your screen that says "Folder contains a Dev Container configuration file. Reopen folder to develop in a container". Click on "Reopen in Container". This will boot up a Docker container, a virtual environment that will have the correct version of Node installed for you. We will use Docker for this assignment to ensure that everyone in the class is using the same up-to-date version of Node - ensuring consistency amongst students in the class and (hopefully) to prevent compatibility issues!
+    - If you do not see this pop-up, you can also open the VS Code Command Palette (Cmd + Shift + P) and search for "Remote-Containers: Reopen in Container".
+    - Again, you must ensure that you install the extension linked in the "Prerequisites" section above for this to work! If you did install this extension and are still having issues, try to reload VS Code.
+5. The Docker container will be open once you see the green "Dev Container" icon in the bottom left corner of your VS Code window! You can now ensure that Node is installed by running `node -v` in the terminal. You should see a version number printed out.
+6. If you have many detected changes in the Git tab of VSCode after the container builds, you may *clear all changes*. 
+7. Now, install the node packages required for this project by running `npm install` in the terminal. This will install all of the dependencies listed in the `package.json` file.
+8. You can now run the project by running `npm run dev` in the terminal. This will start a local dev server that will host your website. Your website would then be accessible at the url `http://localhost:4260` in your browser. 
+9. Navigate to this URL. You should see the pixel art maker UI appear on your screen! Interacting with the app should not work at the moment - this is because you will be connecting the app's view to its functionality in this assignment!
+
+You will begin working on this project in the `engine.ts` file. Check out the project structure section below for more details.
+
+## Project Structure and Architecture
+
+The pixel art maker app is set up with the following file structure:
+
+```html
+website
+├── src
+|   ├── engine.ts
+|   ├── engine.test.ts
+|   ├── main.ts
+|   ├── utils.ts
+|   └── ...
+├── index.html
+├── styles.css
+└── ...
+```
+
+1. **`src/engine.ts`**: This file contains the app's "engine", which includes all of the business logic for the pixel art maker. In the traditional MVC (model-view-controller) architecture, this file would be the considered the *model*.
+2. **`src/engine.test.ts`**: This file contains unit tests to help you check your implementation of `engine.ts` is correct.
+3. **`src/main.ts`**: This is the TS file that `index.html` loads and therefore serves as the entry point for the application. This file will connect the app's logic to the UI through *event handlers*. In the traditional MVC (model-view-controller) architecture, this file would be the considered the *controller*.
+4. **`src/utils.ts`**: This file contains utility functions that is used to convert hex codes to RGB colors.
+5. **`index.html`**: This file contains the HTML structure of the pixel art maker UI. In the traditional MVC (model-view-controller) architecture, this file would be the considered the *view*.
+6. **`styles.css`**: This file contains the rest of the CSS styles for the app.
+
+## Steps
+
+1. Complete the TODOs in **`src/engine.ts`**, which involve implementing `paintCell()` and `clearCanvas()`.
+2. Once you have implemented these, you can check your work by running `npm run test` in the terminal. This will run the unit tests in `src/engine.test.ts`. If all four test cases pass, you should be good to move on to the `src/main.ts` file.
+3. Complete all of the TODOs in **`src/main.ts`**. The bulk of the work for A02 is here! Once you successfully complete the TODOs in this file, your app should be working.
+
+## Demo
+
+Since this project involves adding the functionality to the pixel art maker app, this video below will show you the final project that you will be working towards. 
+
+<ResponsiveIFrame src={'https://www.youtube.com/embed/TZtoRx8xBqs?si=CICyh6JBMrO1xzIV' } />
+
+## Expectations
+
+The full grading breakdown for A02 is as follows:
+
+<Rubric>
+    <RubricSectionHeader title={"Functionality"} points={85} />
+    <RubricItem points={10}>
+        The user can change the selected color. The selected color is shown with the color blob on the button, and drawing on the canvas will color in pixels with the newly selected color.
+    </RubricItem>
+    <RubricItem points={20}>
+        The user is able to draw successfully using the pencil tool by clicking and dragging through pixels.
+    </RubricItem>
+    <RubricItem points={20}>
+        The user is able to erase successfully using the eraser tool by clicking and dragging through pixels.
+    </RubricItem>
+    <RubricItem points={10}>
+        The user can use the paint tool to fill the canvas with the selected color.
+    </RubricItem>
+    <RubricItem points={10}>
+        The user can switch tools and the selected tool is indicated to the user.
+    </RubricItem>
+     <RubricItem points={10}>
+        The user can clear the canvas using the clear button. This button needs to show a confirmation alert first before clearing the canvas.
+    </RubricItem>
+    <RubricItem points={5}>
+        The user can download the canvas as an image using the download button.
+    </RubricItem>
+    <RubricSectionHeader title={"Deployment"} points={15} />
+    <RubricItem points={10}>
+        Your website is deployed using Vercel and is accessible at a URL with the format: `https://a02-pixel-art-maker-yourname.vercel.app`.
+    </RubricItem>
+</Rubric>
+
+## Deployment
+
+The final step of this project is to deploy it to the web! Like in a01, we will use Vercel to deploy this assignment.
+
+1. Using the same method that you did for a01, create a *deployment fork* of your classroom respository on your personal account.
+2. Then, log into Vercel.
+3. Press the "Add New" button on the right, then "Project"
+4. On the lefthand side under the "Import Git Repository" heading, you should see your deployment fork. Press "Import".
+5. **Under Framework Preset, make sure "Vite" is selected.**
+6. Press "Deploy" and wait for the deployment to finish.
+
+Please come into office hours if you encounter any issues!
+
+## Submission
+
+You will submit your final website to Gradescope. Before submitting, make sure that:
+
+1. All of your changes have been pushed to GitHub. You will be submitting a GitHub repository link along with source code - if you do not push your changes, we may get an incomplete version of your website.
+2. Your website is deployed to Vercel and is accessible at the URL following the format: `https://a02-calculator-yourname.vercel.app`.
+
