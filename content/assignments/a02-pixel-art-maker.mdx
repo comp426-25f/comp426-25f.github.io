@@ -7,12 +7,12 @@ published: false
 
 <Callout type="blue">
     **Pair Project:**<br />
-    You may work with at *most one other person for this assignment!* Both partners must accept the assignment and join the same group in GitHub Classroom. If you choose to work with a partner, you will submit one group submission on GradeScope. Both partners will receive the same grade for the assignment. *Note: Max team size must be 2, no exceptions!*
+    You may work with at *most one other person for this assignment!* Both partners must accept the assignment and join the same group in GitHub Classroom. If you choose to work with a partner, you will submit one group submission on GradeScope. Both partners will receive the same grade for the assignment.<br />*Note: Max team size must be 2, no exceptions!*
 </Callout>
 
 ## Synopsis
 
-In this assignment, you will practice configuring event handlers to add functionality to a pixel art maker app! The app will allow users to draw pixel art on a canvas, switch between tools (pencil and eraser) and colors, and download images. You will also have the chance to deploy the app so that it is live and accessible on the internet.
+In this assignment, you will practice configuring event handlers to add functionality to a pixel art drawing app! The app will allow users to draw pixel art on a canvas, switch between tools (pencil and eraser) and colors, and download drawn images. You will also have the chance to deploy the app so that it is live and accessible on the internet.
 
 ## Prerequisites
 
@@ -22,13 +22,18 @@ You will need to have Docker Desktop installed on your computer. If you do not h
 
 Also, please install the Docker DevContainers extension for VS Code. This will allow you to open this project in a Docker DevContainer! Install here: [Docker DevContainers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
+<Callout type="yellow">
+    **Note:**<br />
+    If you have not already used Docker DevContainers for another class, please start this step *early* so that you have the chance to get help in office hours if needed!
+</Callout>
+
 Docker is a tool that sets up virtual environments specific to the project you are working on. This ensures that everyone in the class is using the same up-to-date version of Node - ensuring consistency amongst students in the class and (hopefully) to prevent compatibility issues!
 
 ## Getting Started
 
 To get started on this assignment, please complete the following steps:
 
-1. Accept the **GitHub Classroom** assignment [here](https://classroom.github.com/a/tLhV7zWW). Reminder, you may work with at *most one other person for this assignment!* Both partners must accept the assignment and join the same group in GitHub Classroom. If you choose to work with a partner, you will submit one group submission on GradeScope. Both partners will receive the same grade for the assignment.
+1. Accept the **GitHub Classroom** assignment [here](https://classroom.github.com/a/JlRBUgu5). Reminder, you may work with at *most one other person for this assignment!* Both partners must accept the assignment and join the same group in GitHub Classroom. If you choose to work with a partner, you will submit one group submission on GradeScope. Both partners will receive the same grade for the assignment.
 
 2. Clone the repository to your local machine. You can either do this by:
     - Using the CLI / Terminal: `git clone <repository-url>`
@@ -79,7 +84,7 @@ website
 
 Since this project involves adding the functionality to the pixel art maker app, this video below will show you the final project that you will be working towards. 
 
-<ResponsiveIFrame src={'https://youtu.be/tcfl6eL_8pw' } />
+<ResponsiveIFrame src={'https://www.youtube.com/embed/tcfl6eL_8pw?si=dq9nGmKsgWuv6lTF' } />
 
 ## Expectations
 
@@ -124,6 +129,15 @@ The final step of this project is to deploy it to the web! Like in a01, we will 
 4. On the lefthand side under the "Import Git Repository" heading, you should see your deployment fork. Press "Import".
 5. **Under Framework Preset, make sure "Vite" is selected.**
 6. Press "Deploy" and wait for the deployment to finish.
+
+<Callout type="green">
+    **Connection to L03:**<br />
+    To deploy your project to the internet, Vercel will *build* your project using Vite. During this step, the TypeScript code you wrote will be *transpiled* into JavaScript code so that it can successfully run in the browser of the user who visits your website. 
+
+    To see this in action, open your website using the Vercel deployment URL (in the format of `a02-pixel-art-maker-yourname.vercel.app`) and open your browser's developer tools. Click on the **Network** tab and refresh the page. You should see a request was made for a file named `index-<hash>.js`. Click on this file - to view its contents, you might need to click on the "Preview" tab. This is the JavaScript code that was generated from your TypeScript code by Vite! You will be able to see some remnants of the TypeScript code you wrote. Note that types have been removed from the code, and the code has been minified (variable names have been shortened, comments have been removed, etc.), but the logic of the code remains the same.
+
+    You will be asked to submit a screenshot of this step as part of your submission! We will be adding many tools to improve the developer experience (DX) of building web applications - but ultimately, it is important to remember that in the end, regardless of the tools we use, the client will ultimately recieve a combination of just HTML, CSS, and JavaScript.
+</Callout>
 
 Please come into office hours if you encounter any issues!
 

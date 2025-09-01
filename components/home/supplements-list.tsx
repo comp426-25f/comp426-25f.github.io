@@ -7,7 +7,7 @@ export function SupplementsList() {
   const sortedSupplements = allSupplements.sort((a, b) => {
     const dateA = new Date(a.publishedDate || '');
     const dateB = new Date(b.publishedDate || '');
-    return dateB.getTime() - dateA.getTime();
+    return dateA.getTime() - dateB.getTime();
   });
 
   return (
