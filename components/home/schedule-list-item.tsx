@@ -55,7 +55,7 @@ export function ScheduleListItem({ item }: { item: ScheduleItem }) {
                   size="sm"
                   className="hidden md:inline-flex">
                   <Link href={item.slideshowUrl} target="_blank">
-                    Slides
+                    {item.subject === 'midterm' ? 'Details' : ' Slides'}
                   </Link>
                 </Button>
                 <Button
@@ -64,7 +64,7 @@ export function ScheduleListItem({ item }: { item: ScheduleItem }) {
                   size="sm"
                   className="md:hidden h-5 px-0 hover:underline hover:cursor-pointer">
                   <Link href={item.slideshowUrl} target="_blank">
-                    Slides
+                    {item.subject === 'midterm' ? 'Details' : ' Slides'}
                   </Link>
                 </Button>
               </>
