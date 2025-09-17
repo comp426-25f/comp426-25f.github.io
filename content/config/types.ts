@@ -116,6 +116,10 @@ export const Supplement = defineContentType({
       // of: Author,
       type: "list",
       of: { type: "string" },
+    },
+    showToc: {
+      type: 'boolean',
+      default: true
     }
   }
 });
