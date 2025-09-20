@@ -1,0 +1,226 @@
+---
+code: A03
+title: NYT Games
+due: "2025-10-01T23:59:59-04:00"
+published: false 
+---
+
+<Callout type="blue">
+    **Pair Project:**<br />
+    This is a relatively large assignment, so you may work with at *most one other person for this assignment.* Both partners must accept the assignment and join the same group in GitHub Classroom. If you choose to work with a partner, you will submit one group submission on GradeScope. Both partners will receive the same grade for the assignment.<br />*Note: Max team size must be 2, no exceptions!*
+
+    If you work in a group, I highly discourage splitting the project by games to each team member, where Parter 1 works on Wordle and Partner 2 works on Connections. I recommend pair programming and working together on each! The Connections game will be more challenging to implement than Wordle. 
+</Callout>
+
+## Synopsis
+
+In this assignment, you will be recreating two famous New York Times games - [**Wordle**](https://www.nytimes.com/games/wordle/) and [**Connections**](https://www.nytimes.com/games/connections/)! You will create these games using React and Tailwind, and your final product will be deployed live on the internet using Vercel.
+
+## Prerequisites
+
+You will need to have Docker Desktop installed on your computer. If you do not have these installed, please use the following links to download and install them:
+1. [Docker Desktop](https://www.docker.com/products/docker-desktop)
+    *Make sure to have this app open before getting started!*
+
+Also, please install the Docker DevContainers extension for VS Code. This will allow you to open this project in a Docker DevContainer! Install here: [Docker DevContainers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+**You will also need to be caught up with COMP426 lectures through L10**.
+
+## Getting Started
+
+To get started on this assignment, please complete the following steps:
+
+1. Accept the **GitHub Classroom** assignment [here](). Reminder, you may work with at *most one other person for this assignment!* Both partners must accept the assignment and join the same group in GitHub Classroom. If you choose to work with a partner, you will submit one group submission on GradeScope. Both partners will receive the same grade for the assignment.
+
+2. Clone the repository to your local machine. You can either do this by:
+    - Using the CLI / Terminal: `git clone <repository-url>`
+    - Using [GitHub Desktop](https://desktop.github.com/download/): Click on the green "Code" button and select "Open with GitHub Desktop".
+3. Open the cloned repository in Visual Studio Code.
+4. You will now see a pop-up in the bottom right corner of your screen that says "Folder contains a Dev Container configuration file. Reopen folder to develop in a container". Click on "Reopen in Container". This will boot up a Docker container, a virtual environment that will have the correct version of Node installed for you. We will use Docker for this assignment to ensure that everyone in the class is using the same up-to-date version of Node - ensuring consistency amongst students in the class and (hopefully) to prevent compatibility issues!
+    - If you do not see this pop-up, you can also open the VS Code Command Palette (Cmd + Shift + P) and search for "Remote-Containers: Reopen in Container".
+    - Again, you must ensure that you install the extension linked in the "Prerequisites" section above for this to work! If you did install this extension and are still having issues, try to reload VS Code.
+5. The Docker container will be open once you see the green "Dev Container" icon in the bottom left corner of your VS Code window! You can now ensure that Node is installed by running `node -v` in the terminal. You should see a version number printed out.
+6. If you have many detected changes in the Git tab of VSCode after the container builds, you may *clear all changes*. 
+7. Now, install the node packages required for this project by running `npm install` in the terminal. This will install all of the dependencies listed in the `package.json` file.
+8. You can now run the project by running `npm run dev` in the terminal. This will start a local dev server that will host your website. Your website would then be accessible at the url `http://localhost:4260` in your browser. 
+9. Navigate to this URL. You should see the home page for the NYT Games app with buttons to play either Wordle or Connections!
+
+## Project Structure and Architecture
+
+The NYT Games repository is set up with the following structure:
+
+```html
+a03
+├── src
+|   ├── home
+|   |   ├── HomePage.tsx
+|   |   └── ...
+|   ├── wordle
+|   |   ├── WordlePage.tsx
+|   |   ├── Tile.tsx
+|   |   └── ...
+|   ├── connections
+|   |   ├── ConnectionsPage.tsx
+|   |   └── ...
+|   ├── ui
+|   |   └── ...
+|   ├── utils
+|   |   └── ...
+|   └── hooks
+|   |   └── ...
+├── index.html / wordle.html / connections.html
+├── styles.css
+└── ...
+```
+
+There are three pages for this site - `/`, `/wordle`, and `/connections`. There are three HTML files for these pages. Each of these pages render the associated `Page` component.
+
+The **`/src`** directory contains all of the TypeScript code and React components for this project. The `/src/home`, `/src/wordle`, and `/src/connections` directories contain the React components for each page / game.
+    * The `HomePage` component is shown when the user navigates to `/`.
+    * The `WordlePage` component is shown when the user navigates to `/wordle`.
+    * The `ConnectionsPage` component is shown when the user navigates to `/connections`.
+Other components exist within each directory and specify child components to our page components.
+
+The **`/utils`** directory contains helper functions that can help you while implementing this project. Specifically, I recommend looking at `/utils/collections.ts`, which contains functions that help to mutate sets and arrays.
+
+The **`/hooks`** and **`/ui`** directories contain some extra functionality and components from the starter code.
+
+## Tasks
+
+To make the setup for this project easier, the starter code provides a lot of the styling configured for the home page, wordle game, and connections game for you. Throughout the project, all tasks have been marked with **`TODO:`**. I recommend using cmd+F to make sure you complete all of the tasks! I recommend the following ordering for completing these tasks, which can be isolated to specific files.
+
+<h4 className='mt-8 scroll-m-20 text-xl font-semibold tracking-tight'>
+Step 1: Attributions (`/src/home/HomePage.tsx`)
+</h4>
+
+The first step of a03 is to edit the home page to include your and your parter's names in the footer.
+
+<h4 className='mt-8 scroll-m-20 text-xl font-semibold tracking-tight'>
+Step 2: React + Tailwind Exploration (`src/wordle/Tile.tsx`)
+</h4>
+
+Next, you will begin to explore using React and Tailwind by implementing the Wordle `Tile` component from scratch. This file specifies the component for a single tile on the Wordle game grid You will implement this component from scratch. You will also be required to add styling to the component using Tailwind. The comments in this file list the requirements for your tile component. I recommend using the [Tailwind docs](https://tailwindcss.com/docs/installation/using-vite) as a reference guide as you explore using Tailwind.
+
+    <Callout type="gray">
+        **Note:**<br />
+        To make a03 look similar to the real NYT games, the starter code specifies special custom Tailwind colors in the `styles.css` file! For example,
+        you will use the `wordle-yellow` and `wordle-green` Tailwind colors in your
+        implementation. You can use these colors like how you would use any other
+        built-in Tailwind color, you do not need brackets around the color name. For example, to change the text color of a paragraph to be the `wordle-green` color, the following TSX will work:
+        ```tsx
+        <p className="text-wordle-green">Green text!</p>
+        ``` 
+    </Callout>
+
+**Note:** Aside from `Tile.tsx`, all component UIs have been made for you! You should not have to update the TSX of any component from here on out.
+
+<h4 className='mt-8 scroll-m-20 text-xl font-semibold tracking-tight'>
+Step 3: Wordle Implementation (`src/wordle/WordlePage.tsx`)
+</h4>
+
+Now that you have created the `Tile` component, you can now complete the implementation of the Wordle game! The core functionality of Wordle is found in the `WordlePage` component. First, read through this file in its entirety to familiarize yourself with the state variables provided for you and the `TODO` steps. Then, complete these steps. Once you complete these steps, you should have a working Wordle game!
+
+<Callout type="gray">
+        **External APIs:**<br />
+
+        The Wordle game will require accessing external data via an API call. The API has been created for you and is accessible at this URL: `https://comp426-apis.vercel.app/api/wordle`. The API has two endpoints:
+
+        - `GET /api/wordle/word-validator/[word]` This endpoint determines if a provided 5-letter word is a valid guess (word exists in the dictionary). This endpoint will be used to ensure that all guesses from the user are valid words.
+
+        - `GET /api/wordle/random-word/` This endpoint generates a random 5-letter word. This will be used at the start of the game to determine the word that the user is trying to guess.
+
+        Remember from the asynchronous programming lecture that we can load data asynchronously using the fetch API. We can then use .then()` method of the returned promise to work with the data, like so:
+
+        ```ts
+        await fetch(`url here`)
+            .then((response) => response.json())
+            .then((data) => {
+                // do something with the data
+            });
+        ```
+    </Callout>
+
+<h4 className='mt-8 scroll-m-20 text-xl font-semibold tracking-tight'>
+Step 4: Connections Implementation (`src/wordle/ConnectionsPage.tsx`)
+</h4>
+
+Finally, you will complete the implementation of the Connections game! The core functionality of Connections is found in the `ConnectionsPage` component. First, read through this file in its entirety to familiarize yourself with the state variables provided for you and the `TODO` steps. Then, complete these steps. Once you complete these steps, you should have a working Connections game!
+
+
+## Deployment
+
+The final step of this project is to deploy it to the web! Like in a02, we will use Vercel to deploy this assignment.
+
+1. Using the same method that you did for a01, create a *deployment fork* of your classroom respository on your personal account.
+2. Then, log into Vercel.
+3. Press the "Add New" button on the right, then "Project"
+4. On the lefthand side under the "Import Git Repository" heading, you should see your deployment fork. Press "Import".
+5. **Under Framework Preset, make sure "Vite" is selected.**
+6. Press "Deploy" and wait for the deployment to finish.
+
+## Share With Friends
+
+Once your game is deployed, feel free to share the link with friends to show off the amazing work you did!
+
+## Submission
+
+You will submit your final website to Gradescope. Before submitting, make sure that:
+
+1. All of your changes have been pushed to GitHub. You will be submitting a GitHub repository link along with source code - if you do not push your changes, we may get an incomplete version of your website.
+
+2. Your website is deployed to Vercel and is accessible at the URL following the format: `https://a03-nyt-games-yourname.vercel.app`.
+
+## Expectations
+
+The rubric for this assignment is as follows:
+
+<Rubric>
+    <RubricSectionHeader title={"Wordle Tile Implementation"} points={5} />
+    <RubricItem points={5}>
+        The `Tile` component is implemented correctly and is styled solely using Tailwind.
+    </RubricItem>
+    <RubricSectionHeader title={"Wordle"} points={40} />
+    <RubricItem points={10}>
+        The user is able to add and remove characters from the current guess.
+    </RubricItem>
+    <RubricItem points={10}>
+        Guessing a word updates the game state and the user is able to see the result of their guess. Then, the user is able to guess again and typing results in letters appearing on the next line.
+    </RubricItem>
+    <RubricItem points={5}>
+        The game alerts the user if they attempt to submit a guess that is too short.
+    </RubricItem>
+    <RubricItem points={5}>
+        The game alerts the user if they attempt to submit a guess that is not a word.
+    </RubricItem>
+    <RubricItem points={5}>
+        A new random word is selected from the API every time the game loads.
+    </RubricItem>
+    <RubricItem points={5}>
+        The results page shows up if the user has used all 6 guesses. Both should show up after a 2000ms delay from when the most recent guess's result is shown.
+    </RubricItem>
+
+    <RubricSectionHeader title={"Connections"} points={40} />
+    <RubricItem points={5}>
+        A new random puzzle is selected from the API every time the game loads.
+    </RubricItem>
+    <RubricItem points={5}>
+        The user is able to add and remove tiles from their current guess. Only four tiles can be selected at a time.
+    </RubricItem>
+    <RubricItem points={10}>
+        Making a correct guess correctly updates the UI to reveal the correct guess and removes words used in the guess from the available options for the next round. 
+    </RubricItem>
+    <RubricItem points={10}>
+        Making an incorrect guess correctly shakes the selected tiles, decreases the number of remaining guesses, and shows the correct toasts as specified.
+    </RubricItem>
+    <RubricItem points={5}>
+        The game ending (either as a win or loss) is correctly handled as specified.
+    </RubricItem>
+    <RubricItem points={5}>
+        The shuffle and deselect all buttons work as expected.
+    </RubricItem>
+
+    <RubricSectionHeader title={"Deployment"} points={15} />
+    <RubricItem points={15}>
+        Your website is deployed using Vercel and is accessible at a URL with the format: `https://a03-nyt-games-yourname.vercel.app`.
+    </RubricItem>
+</Rubric>
