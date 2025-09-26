@@ -1,0 +1,276 @@
+---
+code: R06
+title: Drizzle Crash Course
+due: "2025-10-19T23:59:59-04:00"
+published: false
+authors:
+    - ajaygandecha
+---
+
+<Callout type="gray">
+    <strong>Welcome Team 426! ✨</strong><br />
+    This reading is still a work-in-progress. If you have any recommendations for how to improve it, please let me know!
+</Callout>
+
+## Introduction to ORMs
+
+Traditionally, we interact with relational databases using **Structured Query Language (SQL)**. Using SQL, we can create new tables in our database, retrieve existing data in a table, create new data, update existing data, and delete data. Here is some example SQL code for all of these types of operations:
+
+```sql
+-- Create a SQL table
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    role VARCHAR(50),
+    salary DECIMAL(10, 2)
+);
+
+-- Read all data from the table
+SELECT * FROM employees;
+
+-- Insert a new row into the table
+INSERT INTO employees (name, role, salary)
+VALUES ('Ajay Gandecha', 'Instructor', 10.00);
+
+-- Update an existing row (e.g., change salary for Ajay)
+UPDATE employees
+SET salary = 999999999.00
+WHERE name = 'Ajay Gandecha';
+
+-- Delete a row (e.g., remove Ajay - he got fired for changing his own salary)
+DELETE FROM employees
+WHERE name = 'Ajay Gandecha';
+```
+
+While using SQL directly may be great when administering the database, we often want our applications to interact with our database tables. While we could run SQL from our TypeScript projects, we would essentially be writing raw strings to contain our scripts. In addition, the output of SQL queries is plain text as well, which is incredibly difficult to parse in our apps. For example, the following would be an example result from reading the rows in our database table:
+
+```md
+ id |     name       |    role    |  salary  
+----+----------------+------------+----------
+  1 | Ajay Gandecha  | Instructor | 10.00
+(1 row)
+```
+
+Ideally, we want the result of SQL queries to be in the form of *objects* for our programming language. For example:
+
+```ts
+{
+    id: 1,
+    name: "Ajay Gandecha",
+    role: "Instructor",
+    salary: 10.00
+}
+```
+
+In addition, we would also want a nice API for interacting with our database using functions in our programming language rather than a raw string query. For example, instead of this:
+
+```md
+const sql = "SELECT * FROM employees;"
+const result = db.execute(sql);
+```
+
+we would want something like:
+
+```ts
+const result = db.query.employeesTable.findAll();
+```
+
+This class of tools are known as **Object Relational Mappers (ORMs)**. ORMs are tools that let developers interact with databases using objects and functions in their programming language of choice instead of writing raw SQL queries. ORMs also allow the developer to *define the shape* of the tables in their databases, allowing the database configuration to live as part of their project. ORMs essentially serve as the bridge between applications and their databases! ORMs convert back and forth from programming language-friendly objects and functions to SQL strings.
+
+![orm](/images/readings/r06/orm.png)
+
+There are many popular ORMs in the TypeScript ecosystem. One of the most popular options is **[Drizzle](https://orm.drizzle.team)**. Drizzle is light-weight, fast, and provides an extremely developer-friendly API. Drizzle allows us to connect to many different types of databases, including PostgreSQL, MySQL, and more. In COMP 426, we will be using a PostgreSQL database, provided by Supabase, to store the data for our web applications.
+
+## Connecting to the Database 
+
+Most databases expose a *database URL* that tools can use to connect to the database directly. Databases are usually made available at some location on the network, which we specify by providing the *host* (the device on the network hosting the database) and a specific *port* (entry point to the specific database service).
+
+PostgreSQL databases also have *users* with certain permissions that can connect to the database. So, in the database URL, the user and password of the user attempting to connect to the database must be specified.
+
+Finally, we must include the *database's name* as part of the URL. 
+
+In total, for a PostgreSQL database, the database URL is formatted like so:
+
+```md
+postgres://[user]:[password]@[host]:[port]/[database_name]
+```
+
+Filled in with values, the database URL could look something like this:
+
+```md
+postgres://postgres:secret-password@localhost:5432/db
+```
+
+This database URL is considered a *secret*, or a sensitive piece of data! We do not want the database URL shared publicly because anyone can then access the database. To store secrets in a Git repository such that the secrets are not pushed to GitHub's servers, we typically store secrets in a `.env` file, like so:
+
+```md title=".env File"
+DATABASE_URL=postgres://postgres:secret-password@localhost:5432/db
+```
+
+We can exclude `.env` files from our Git history by listing the file path in a `.gitignore` file at the root of our repository, like so:
+
+```md title=".gitignore"
+.env
+```
+
+With both of these files in our project, our project structure would look something like the following:
+```md
+project
+├── ... (all project files)
+├── .env
+└── .gitignore
+```
+
+It is ***very important*** that your project repositories have this structure. Revealing secrets in the real world could mean creating an extremely critical security vulnerability.
+
+From within our TypeScript code, we can access the values in our `.env` file using `process.env.` For example, when connecting to our database with Drizzle, we can access the database URL like so:
+
+```ts
+// Connects to the database at the URL provided by DATABASE_URL in `.env`.
+const db = drizzle(process.env.DATABASE_URL!);
+```
+
+## Building the Database Schema
+
+One of the core features of ORMs like Drizzle is their ability to specify the configuration of our databases, allowing us to specify the tables of our database from within our project's code. With Drizzle, we can specify the tables in our database using TypeScript code, then run a script to push our configuration to the database. Specifying our database tables in our projects is great because because Drizzle can model data from these tables as TypeScript objects, where the fields in the TypeScript objects have the same name and data types as the columns in the database table.
+
+For example, below is the specification of a `users` database table using Drizzle:
+
+```ts title="schema.ts"
+export const usersTable = pgTable("users", {
+  id: serial().primaryKey(),
+  name: text().notNull(),
+  age: integer().notNull(),
+  email: text().notNull().unique(),
+});
+```
+
+Notice that we define all of the Postgres table's columns, their data types, and extra properties that each column can have! The Drizzle documentation shows the following structure for how tables are defined:
+
+![table-spec](/images/readings/r06/table-spec.svg)
+
+When we use Drizzle, we also include a Drizzle configuration file in our projects (typically with the name `drizzle.config.ts`). 
+
+```ts title="drizzle.config.ts"
+import { defineConfig } from "drizzle-kit";
+
+export default defineConfig({
+  dialect: "postgresql",
+  schema: "./src/schema.ts", // <- here!
+  out: "./drizzle",
+  dbCredentials: {
+    url: process.env.DATABASE_URL!,
+  },
+});
+```
+
+In this configuration file, we include a path to the file where our database tables are defined. By convention, we typically call this file `schema.ts`. Once this configuration file is set, we can use command line tools to *push* our database schema to the database - meaning that we can add the table we defined in our TypeScript code into our database:
+
+```bash
+npx drizzle-kit push
+```
+
+Once we run this command, we can then look in our database to confirm that the table was created. I recommend [TablePlus](https://tableplus.com), which provides a great user interface. You will have the chance to use TablePlus to connect to your database in the next section. When we open our database in TablePlus after pushing our schema to the database, we see the table was successfully created:
+
+![created-table](/images/readings/r06/created-table.png)
+
+From here, Drizzle allows us to perform all of the **CRUD** operations on the database, an acronym including the following operations:
+- [**Create (aka Insert)**](https://orm.drizzle.team/docs/insert): Adds new rows in the database.
+- [**Read (aka Query)**](https://orm.drizzle.team/docs/rqb): Read (*query*) rows in the database.
+- [**Update**](https://orm.drizzle.team/docs/update): Change existing rows in the database.
+- [**Delete**](https://orm.drizzle.team/docs/delete): Removes existing rows in the database.
+
+The Drizzle documentation is comprehensive and does a great job explaining how Drizzle can be used for each of these operations. However, reading this documentation on its own will likely not make you more proficient using Drizzle - the best way to gain familiarity with tools like Drizzle is often to give right in!
+
+## R06 Exercise
+
+To help you both digest important parts of the Drizzle documentation and gains hands-on practice using Drizzle, the next part of this reading will be a collection of small coding challenges! Rather than working in the context of a large web application for now, this exercise will involve running small TypeScript files in a controlled exercise environment.
+
+### Setting up the R06 Exercise
+
+To get started with the exercise:
+1. Create a repository by accepting the GitHub assignment link [here]().
+2. Clone your project to your computer. Once cloned, open the project in Visual Studio Code.
+3. You will be prompted to open this project in a Docker DevContainer. Press on "Reopen in Container". 
+4. Once the DevContainer opens, run `npm install` in the terminal to install all Node packages.
+
+The DevContainer for this project sets up a **local PostgreSQL database** that you will use Drizzle to interact with. To connect to the database, be aware of the database's properties:
+- Host: `db` (NOTE: From within the DevContainer, we will use `db` as the host for the database)
+- Port: `5432`
+- User: `postgres`
+- User password: `postgres`
+- Database name: `postgres`
+
+Use these five properties to **construct a database URL** you can use to connect to the database.
+
+Once you have, **create a `.env` file at the root of your project**. Assign the environment variable `DATABASE_URL` to the URL you created in the step above. You can follow the same format as the *"Connecting to the Database"* section of this reading.
+
+### Using TablePlus to Access the Database
+
+You can also use TablePlus to connect to your database and see the contents of your database in a nice UI. To do so, download TablePlus [here](https://tableplus.com/download/).
+
+Then, open the app. You should see a pop-up similar to:
+
+![tableplus-0](/images/readings/r06/tableplus-0.png)
+
+Press on "Create connection...". You will see a pop-up to select the database provider. Select **PostgreSQL**. Then, fill in the database information like so:
+
+![tableplus-1](/images/readings/r06/tableplus-1.png)
+
+Press on "Connect". You should then see your database! You should have no tables in the database at this point.
+
+### Complete The Levels
+
+Now that your project is set up, there are three levels to complete! 
+
+**Level 1**
+
+To start level 1, navigate to the `src/level-1/schema.ts` file. Follow the TODO comments to create your first database schema in Drizzle, then push the schema to the database. Once you do, you can use TablePlus to see if your table was successfully created.
+
+Then, nativate to the `src/level-1/index.ts` file. Follow the TODO comments to begin interacting with your database. You can run the script at any time using the following command:
+
+```bash
+npm run level-one
+```
+
+This command combines the following steps into one for easy testing and development:
+1. Wipes the database of all contents.
+2. Pushes the schema (`/src/level-1/schema.ts`) to the database.
+3. Runs the script `/src/level-1/index.ts`.
+
+**Level 2**
+
+Once you have finished level 1, you are ready to move on to level 2. This level re-uses the schema from level 1. So, navigate to `src/level-2/index.ts`. Follow the TODO comments to complete the level. You can run the script at any time using the following command:
+
+```bash
+npm run level-two
+```
+
+This command combines the following steps into one for easy testing and development:
+1. Wipes the database of all contents.
+2. Pushes the schema (`/src/level-1/schema.ts`) to the database (used again for level 2).
+3. Runs the script `/src/level-2/index.ts`.
+
+**Level 3**:
+
+Take a look at the schema defined in `/src/level-3/schema.ts`. This schema defines two tables related together by a *one-to-many relationship*. Please read more about database relationships [here](https://orm.drizzle.team/docs/relations#one-to-many). In this exercise, you will not be asked to define database relationships, but it will be necessary in future assignments and / or the final project.
+
+Then, navigate to `src/level-3/index.ts`. Follow the TODO comments to complete the level. You can run the script at any time using the following command:
+
+```bash
+npm run level-three
+```
+
+This command combines the following steps into one for easy testing and development:
+1. Wipes the database of all contents.
+2. Pushes the schema (`/src/level-3/schema.ts`) to the database.
+3. Runs the script `/src/level-3/index.ts`.
+
+### Submitting the Exercise
+
+Once you have finished the exercise, congratulations! If you are ready to submit, run the following command:
+```bash
+npm run create-submission
+```
+
+This command will create a `submission.txt` file at the root of your project containing your output from all three of the levels. You will submit this file to GradeScope.
