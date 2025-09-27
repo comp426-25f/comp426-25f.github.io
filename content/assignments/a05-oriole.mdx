@@ -1,0 +1,274 @@
+---
+code: A05
+title: Oriole
+due: "2025-10-29T23:59:59-04:00"
+published: false 
+---
+
+<Callout type="red">
+    <strong>MISSING ACCEPT LINK</strong><br />
+    Configure the correct assignment accept link here.
+</Callout>
+
+## Synopsis
+
+In this assignment, you will be implementing the entire Supabase backend for a novel **social media app - Oriole**! Users can log in / sign up, write posts, upload images, like posts, follow other users, and more. You will use many of Supabase's most powerful backend features, including its database, authentication, and storage.
+
+The app itself will be built using Next.js, deployed live to the internet via Vercel. You will get the chance to connect your Supabase backend to your Next.js project and use Drizzle to interact with your Supabase database. You will also implement *infinite scrolling* on the frontend, a hallmark feature of many social media apps.
+
+## Prerequisites
+
+This is our first assignment with Supabase. If you have not already, make sure that you have signed up for a free account at [Supabase.io](https://supabase.io/). Once you have signed up for an account, you will be ready to move to the next steps.
+
+If you have not already, please install the Docker DevContainers extension for VS Code. This will allow you to open this project in a Docker DevContainer.
+
+Install here: [Docker DevContainers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+## Getting Started with Supabase
+
+Now that you have a Supabase account, if you are new to Supabase, you will be prompted to create a new organization. You can name your organization anything you like. Make sure that your plan is set to the Free tier, as shown below:
+
+![Supabase Free Plan](/images/a05/organization.png)
+
+
+Press "Create organization". Once you have an organization, you can create your project for a05.
+
+There are many steps you will need to create to fully configure your Supabase project. These steps are summarized in the video below. Follow along as I explain the setup process:
+
+<ResponsiveIFrame src={'https://www.youtube.com/embed/OrliU0e09io?si=jbPTzbda-QfJu0_-' } />
+
+By the conclusion of following along with the video, you should have:
+
+- **Created a Supabase Project:** Created a Supabase project for a05.
+- **Configured Supabase Auth**: Configured Supabase Auth for use with email / password authentication, *turning off email confirmation.*
+- **Configured Supabase Storage**: Created the `images` and `avatars` buckets in Supabase Storage and added RLS policies to ensure anyone can perform operations on these buckets.
+
+## Introducing tRPC for Typesafe APIs
+
+### Review of the Three-Tier Architecture
+
+In class, we have discussed the importance of using databases to store data for our web applications. ORMs such as Drizzle are great tools that we can use to interact with our databases from our TypeScript projects - allowing database operations to occur in response to actions taken on our websites.
+
+However, we have to be *very* careful with how we set up our apps to use ORMs. We do **not** want clients to have direct access to our database! By examining the website code the client recieves from the server, it is very possible to recover the database URL, *which would provide direct access to the database* and would be exploited by malicious users to read, modify, or delete data they are not authorized to access.
+
+![db-direct-connection](/images/assignments/a05/db-direct-connection.png)
+
+To solve this problem, we introduced the idea of **exposing API endpoints** from our server. Database operations (using Drizzle) are then only performed by the server and the code that performs these operations is *never sent to the client*. With database logic removed from the JS code the client recieves from the server, there is no way for a malicious user to recover the database URL or credentials. When our website is then loaded on the client's browser, the website can then make HTTP requests to these API endpoints to perform operations that require using the database:
+
+![three-tier](/images/assignments/a05/three-tier.png)
+
+This design pattern is known as the **three-tier architecture** and is the standard for how most web applications work. We let most of our application's business logic be performed by the server whenever a client requests for the work to be done by calling the necessary API.
+
+Remember that whenever we make an HTTP request, we pass along an *HTTP method* that provides information about the type of operation we are attempting to perform on an endpoint. These are:
+- **`GET`**: Used to retrieve data from the server.
+- **`POST`**: Used to create new resources on the server.
+- **`PUT`**: Used to update a resource on the server.
+- **`DELETE`**: Used to remove a specified resource from the server.
+
+So, in total, when we make HTTP requests, we supply both a *method* and an API endpoint specifying the action we want to take on a specific resource. For example:
+
+```mdx
+GET /api/books (Get all books in a library)
+POST /api/article (Create a new article)
+PUT /api/announcement/1 (Edit announcement #1)
+DELETE /api/pokemon/lucario (Remove Lucario from the list of Pokemon)
+```
+
+### Creating Standard API Endpoints in Next.js
+
+With Next.js, we can create API endpoints that can respond to HTTP requests. These endpoints are defined in `route.ts` files placed in the `/app/api` folder. Routes also use file-based routing, so the file path to `route.ts` determines the URL that a client must use to access the endpoint. For example, to create an API endpoint that responds to `GET /api/pokemon` requests, we would need to create a file at the route `app/api/pokemon/route.ts`, which would look like so:
+
+```ts title="app/api/pokemon/route.ts"
+export async function GET(request: NextRequest) {
+  // Load all Pokemon from the database.
+  const allPokemon = await db.query.pokemonTable.fetchMany();
+    
+  // Respond to the client with all Pokemon data in JSON format.
+  return Response.json({ allPokemon })
+}
+```
+
+To add an endpoint for `POST /api/pokemon`, since the route is the same as our previous request, we would add another async function called `POST` to the file above:
+
+```ts title="app/api/pokemon/route.ts"
+export async function GET(request: NextRequest) {
+  // Load all Pokemon from the database.
+  const allPokemon = await db.query.pokemonTable.fetchMany();
+    
+  // Respond to the client with all Pokemon data in JSON format.
+  return Response.json({ allPokemon })
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    // Parse the data that the user is trying to add.
+    const json = await request.json();
+    const data = json as known as Pokemon;
+
+    // Insert into database.
+    const [inserted] = await db
+      .insert(pokemonTable)
+      .values(data)
+      .returning({ id: pokemonTable.id });
+
+    // Respond with the ID of the created Pokemon.
+    return Response.json({ id: inserted.id });
+  } catch (err) {
+    // If there is an error, pass along the error to the user.
+    return Response.json({ error: "Failed to create Pokemon" }, { status: 500 });
+  }
+}
+```
+
+Now, to interact with these APIs from within our Next.js pages, we would need to make a `fetch` call like so:
+
+```ts title="Fetching all Pokemon"
+const response = await fetch("/api/pokemon");
+const json = await response.json();
+const pokemon = json as unknown as Pokemon[];
+```
+
+```ts title="Adding a Pokemon"
+const newPokemon: Pokemon = {
+  name: "Pikachu",
+  type: "Electric",
+};
+
+const response = await fetch("/api/pokemon", {
+  method: "POST",
+  body: JSON.stringify(newPokemon),
+});
+
+if (!response.ok) throw new Error("Failed to create Pokemon");
+
+const json = await response.json();
+const newPokemon = json as unknown as { id: string };
+```
+
+While this approach *works*, there are a new problems. First, using this approach to create APIs often leads us with an incredibly messy file structure that is very hard to parse. Most importantly though, **managing types becomes very difficult** - we lose type safety!
+
+In particular, notice the final example with creating a new Pokemon, defined in the variable `newPokemon` which is of type `Pokemon`. In order to pass it to the API, we have to *convert the object into raw JSON* to send over the network. Then, once the API recieves it, it recieves a *generic* JSON input. We need to cast this back to our *Pokemon* type. We then add the Pokemon to the database and return the Pokemon's ID. This object has to be converted back into JSON to be sent over the network. When the client recieves the response, we again re-cast it to the correct type.
+
+### Why tRPC?
+
+The main problem here is that to cross the client-server boundary, our data has to be converted back and forth from JSON to typed TypeScript objects. We must cast these values every time, since the result of `result.json()` is always an `any` JSON type. Type casting is determined at *runtime*, not at *build time*, meaning that we have no way of verifying that our type conversions are sound until our program runs. 
+
+This makes us lose our foundational TypeScript-provided benefits of type safety and static typing here! In larger projects with dozens of API endpoint and dozens of data types, this becomes very difficult to manage in our codebase, leading us to muddy up our logic with type casts and extra type definitions.
+
+Even worse, since static typing benefits are lost, if we happen to change the data types expected to be the input or output type of an API, type errors and IDE hints do not appear across our code where we use the API. This causes us slip back into the wild world of JavaScript's weakly-typed programming which we seek to avoid.
+
+This is where [**tRPC**](https://trpc.io/docs) comes in! tRPC is a framework that allows us to build *typesafe* APIs in TypeScript. It accomplishes this using the *Remote Procedure Call (RPC)* architectural style, essentially allowing client-side code to call functions on the server as if they are local functions (this architectural style is discussed in *COMP 533: Distributed Systems* and its implementation details are beyond our scope for this class). 
+
+tRPC defines API endpoints using **procedures**. Procedures can either be *queries* (analogous to a `GET` API endpoint) or *mutations* (analogous to `POST` / `PUT` / `DELETE` endpoints). Procedures are easy to define like so:
+
+```ts title="server/api/routers/pokemon.ts"
+const getPokemon = publicProcedure
+  .output(Pokemon.array())
+  .query(async () => {
+    const result = await db.query.pokemonTable.fetchMany();
+    return Post.array().parse(result);
+  });
+```
+
+Multiple pocedures are then combined into a *router*, which specifies a specific collection of APIs. For example, we could create a Pokemon router that contains related procedures for interacting with Pokemon data:
+
+```ts title="server/api/routers/pokemon.ts"
+export const pokemonApiRouter = createTRPCRouter({
+  getPokemon: getPokemon,
+  addPokemon: addPokemon
+});
+```
+
+All of the routers in our application are combined into one final App Router:
+
+```ts title="server/api/routers/root.ts"
+export const appRouter = createTRPCRouter({
+  pokemon: pokemonApiRouter,
+});
+```
+
+Then, on the frontend, we can use our API diretly like so:
+
+```tsx title="some-component.tsx"
+const { data: pokemon } = api.pokemon.getPokemon.useQuery();
+// Yes - in fact, tRPC allows us to use the `useQuery` hook directly!
+// Everything is taken care of for us - we do not need to supply
+// query keys or a query function.
+```
+
+From our frontend, `data` is automatically typed as `Pokemon[]`! In addition, all inputs and outputs for procedures are strongly typed - no type casting is ever necessary between the client-side and server-side code.
+
+The developer experience (DX) of tRPC is unparalleled. For this reason, tRPC has over **39k stars on GitHub** and is used in industry by large software companies including *Google*, *Netflix*, *PayPal*, and more.
+
+### tRPC in Oriole
+
+**a05: Oriole** is set up to use tRPC, and you will be implementing API functionality. All server-side code can be found in the `/server` directory of the project. You can find two routers, one for `post` and `profile` data respectively, in the `/server/api/routers` folder. You will also notice that two types of procedure stems - `publicProcedure` and `privateProcedure` - are used in these API definitions. The APIs defined using `publicProcedure` can be used by any user. The APIs defined by `privateProcedure` are restricted to authenticated users only. The logic to validate user's authentication status has already been completed for you.
+
+We also use [Zod](https://trpc.io/docs/server/validators) for data valization with tRPC, providing a robust way for tRPC to verify that API inputs and outputs are typed correctly. I recommend taking a look at the linked documentation and the defined Zod models in the `/server/models/` directory.
+
+## Getting Started
+
+To get started on this assignment, please complete the following steps:
+
+1. Accept the **GitHub Classroom** assignment [here](). *This is an indidivual assignment so that everyone is able to practice using the tools we have introduced recently in class*.
+2. Clone the repository to your local machine. You can either do this by:
+    - Using the CLI / Terminal: `git clone <repository-url>`
+    - Using [GitHub Desktop](https://desktop.github.com/download/): Click on the green "Code" button and select "Open with GitHub Desktop".
+3. Open the cloned repository in Visual Studio Code.
+4. You will now see a pop-up in the bottom right corner of your screen that says "Folder contains a Dev Container configuration file. Reopen folder to develop in a container". Click on "Reopen in Container". This will boot up a Docker container, a virtual environment that will have the correct version of Node installed for you. We will use Docker for this assignment to ensure that everyone in the class is using the same up-to-date version of Node - ensuring consistency amongst students in the class and (hopefully) to prevent compatibility issues!
+    * If you do not see this pop-up, you can also open the VS Code Command Palette (Cmd + Shift + P) and search for "Remote-Containers: Reopen in Container".
+    * Again, you must ensure that you install the extension linked in the "Prerequisites" section above for this to work! If you did install this extension and are still having issues, try to reload VS Code.
+5. The Docker container will be open once you see the green "Dev Container" icon in the bottom left corner of your VS Code window! You can now ensure that Node is installed by running `node -v` in the terminal. You should see a version number printed out.
+6. If you have many detected changes in the Git tab of VSCode after the container builds, you may *clear all changes*. 
+7. Now, install the node packages required for this project by running `npm install` in the terminal. This will install all of the dependencies listed in the `package.json` file.
+8. You can now run the project by running `npm run dev` in the terminal. This will start a local dev server that will host your website. Your website would then be accessible at the url `http://localhost:3000` in your browser. 
+
+
+## Exploring Oriole
+
+The entire frontend and project structure for Oriole has been set up for you, including the design and layout of the app! This app uses **[shadcn/ui](https://ui.shadcn.com)**, a terrific frontend design framework for Next.js. You will be learning how to use this for yourself in the Design part of the course - but for now, you can explore the codebase and see how shadcn components are implemented throughout the app! Components that come from shadcn directly are placed in the `/components/ui` folder. I designed the other components and pages for you.
+
+Oriole has the following pages:
+- **Login page (`/login`)**: When the user is not logged in, they will see this page. They can log in here or sign up instead.
+- **Sign up page (`/signup`)**: When the user is not logged in, they will see this page. They can sign up here or log in instead.
+- **Home page (`/`)**: This is where the user will see their feed and where they can also post for themselves!
+- **Profile page (`/profile/:id`)**: This is where the user can see the profile and posts of another user. They can also follow or unfollow them here. If the user is viewing their own profile, they can change their avatar image.
+- **Post page (`/post/:id`)**: This is where the user can see a single post in detail.
+
+Oriole also has built-in light and dark mode support, which you can toggle at the top right corner.
+
+I recommend spending at least 20 minutes exploring the codebase and understanding how the pages are structured! Each page includes various features of React and Next.js that we have learned in class, and I think it will be valuable to see these features in a larger, more complex codebase.
+
+## Implementing Functionality
+
+Since the frontend and most of the frontend functions have been handled for you, the main code you need to complete for A05 will be:
+- Adding the functionality for *logging in* and *signing up* users.
+    1. Complete the `TODO` items in the `login.tsx` and `signup.tsx` pages. To do this, you might need to refer to Part 4 of [these docs](https://supabase.com/docs/guides/auth/server-side/nextjs?queryGroups=router&router=pages) for an example on how to set up the login and signup functions.
+- Complete all of the API endpoints in `/server/api/routers` so that our app can interact with the database. ***This is the bulk of the assignment!***
+    1. Complete the `TODO` items in `/server/api/routers/posts.ts` and `/server/api/routers/profiles.ts`. These files contain all of the Drizzle functionality necessary to interact with the `post` and `profile` tables in your Supabase database. You will need to complete these queries to allow users to post, like posts, follow users, and more. The functions, descriptions on expectations, and expected return types are all provided in the file. Pay careful attention to these and the comments in the file to understand what you need to do.
+    2. NOTE: ***NEVER*** modify the files in the `/server/models` folder! Doing so might break the frontend.
+    3. As you develop these functions, you can test them incrementally to see if you are getting the output you are expecting in the `testing.tsx` page.
+- Implement *infinite scrolling* for data on the home page and the profile feed page using `useInfiniteQuery`. This will allow users to scroll through posts infinitely without needing to click a "Load More" button and is a hallmark feature for most social media apps.
+    1. Complete the `TODO` item in `index.tsx`. The comments in the file will guide you on what you need to do.
+- Double check all work is completed by searching for `TODO` workspace-wide! If it is all completed, test the implementation on the frontend. You can test the login and signup functionality by creating a new account and logging in. You can test the posting functionality by creating a new post. You can test the liking functionality by liking a post. You can test the following functionality by following a user. You can test the infinite scrolling functionality by scrolling through the home page and profile feed page.
+
+## Deployment
+
+The final step of this project is to deploy it to the web! Like previous assignments, we will use Vercel to deploy this assignment. **However, there are a few additional steps (noted with "new!")**:
+
+1. Using the same method that you did for a01, create a *deployment fork* of your classroom respository on your personal account. **Make sure this remains a private repository!**
+2. Then, log into Vercel.
+3. Press the "Add New" button on the right, then "Project"
+4. On the lefthand side under the "Import Git Repository" heading, you should see your deployment fork. Press "Import".
+5. Under Framework Preset, make sure to select "Next.js".
+6. **(NEW!)** Under "Environment Variables", you will need to add the environment variables from your `.env` file. You can do this by pressing "New Variable" and adding each variable and value. Make sure to add all of the variables from your `.env` file.
+8. Press "Deploy" and wait for the deployment to finish.
+
+Please come into office hours if you encounter any issues!
+
+## Submission
+
+You will submit your final website to Gradescope. Before submitting, make sure that:
+
+1. All of your changes have been pushed to GitHub. You will be submitting a GitHub repository link along with source code - if you do not push your changes, we may get an incomplete version of your website.
+2. Your website is deployed to Vercel and is accessible at the URL following the format: `https://a05-oriole-yourname.vercel.app`.

@@ -21,6 +21,12 @@ import {
 } from '@/components/mdx/mdx-code-comparison';
 import { Rubric, RubricItem, RubricSectionHeader } from '../rubric';
 import { ResponsiveIFrame } from '../responsive-iframe';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion';
 
 const components: MDXComponents = {
   h1: ({ className, ...props }) => (
@@ -182,7 +188,11 @@ const components: MDXComponents = {
   Rubric,
   RubricItem,
   RubricSectionHeader,
-  ResponsiveIFrame
+  ResponsiveIFrame,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
 };
 
 interface MdxProps {
