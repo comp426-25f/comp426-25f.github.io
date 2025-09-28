@@ -178,9 +178,9 @@ The developer experience (DX) of tRPC is unparalleled. For this reason, tRPC has
 
 ### tRPC in Oriole
 
-**a05: Oriole** is set up to use tRPC, and you will be implementing API functionality. All server-side code can be found in the `/server` directory of the project. You can find two routers, one for `post` and `profile` data respectively, in the `/server/api/routers` folder. You will also notice that two types of procedure stems - `publicProcedure` and `privateProcedure` - are used in these API definitions. The APIs defined using `publicProcedure` can be used by any user. The APIs defined by `privateProcedure` are restricted to authenticated users only. The logic to validate user's authentication status has already been completed for you.
+**a05: Oriole** is set up to use tRPC, and you will be implementing API functionality. All server-side code can be found in the `/server` directory of the project. You can find two routers, one for `post` and `profile` data respectively, in the `/server/api/routers` folder. You will also notice that two types of procedure stems - `publicProcedure` and `protectedProcedure` - are used in these API definitions. The APIs defined using `publicProcedure` can be used by any user. The APIs defined by `protectedProcedure` are restricted to authenticated users only. The logic to validate user's authentication status has already been completed for you.
 
-For `privateProcedure` routes, you are able to access a context (`ctx` variable) as part of the input for the procedure function. One of the values passed in as part of the context is the **subject**, which is of type `Subject`. The subject refers to the *currently signed in user*, allowing you to perform operations based on the user making the request:
+For `protectedProcedure` routes, you are able to access a context (`ctx` variable) as part of the input for the procedure function. One of the values passed in as part of the context is the **subject**, which is of type `Subject`. The subject refers to the *currently signed in user*, allowing you to perform operations based on the user making the request:
 
 ```ts title="Example protected endpoint"
 // Sample protected endpoint - only signed in users can run.
