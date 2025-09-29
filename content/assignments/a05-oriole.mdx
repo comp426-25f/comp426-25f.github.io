@@ -5,11 +5,6 @@ due: "2025-10-29T23:59:59-04:00"
 published: false 
 ---
 
-<Callout type="red">
-    <strong>MISSING ACCEPT LINK</strong><br />
-    Configure the correct assignment accept link here.
-</Callout>
-
 ## Synopsis
 
 In this assignment, you will be implementing the entire Supabase backend for a novel **social media app - Oriole**! Users can log in / sign up, write posts, upload images, like posts, follow other users, and more. You will use many of Supabase's most powerful backend features, including its database, authentication, and storage.
@@ -183,15 +178,81 @@ The developer experience (DX) of tRPC is unparalleled. For this reason, tRPC has
 
 ### tRPC in Oriole
 
-**a05: Oriole** is set up to use tRPC, and you will be implementing API functionality. All server-side code can be found in the `/server` directory of the project. You can find two routers, one for `post` and `profile` data respectively, in the `/server/api/routers` folder. You will also notice that two types of procedure stems - `publicProcedure` and `privateProcedure` - are used in these API definitions. The APIs defined using `publicProcedure` can be used by any user. The APIs defined by `privateProcedure` are restricted to authenticated users only. The logic to validate user's authentication status has already been completed for you.
+**a05: Oriole** is set up to use tRPC, and you will be implementing API functionality. All server-side code can be found in the `/server` directory of the project. You can find two routers, one for `post` and `profile` data respectively, in the `/server/api/routers` folder. You will also notice that two types of procedure stems - `publicProcedure` and `protectedProcedure` - are used in these API definitions. The APIs defined using `publicProcedure` can be used by any user. The APIs defined by `protectedProcedure` are restricted to authenticated users only. The logic to validate user's authentication status has already been completed for you.
 
-We also use [Zod](https://trpc.io/docs/server/validators) for data valization with tRPC, providing a robust way for tRPC to verify that API inputs and outputs are typed correctly. I recommend taking a look at the linked documentation and the defined Zod models in the `/server/models/` directory.
+For `protectedProcedure` routes, you are able to access a context (`ctx` variable) as part of the input for the procedure function. One of the values passed in as part of the context is the **subject**, which is of type `Subject`. The subject refers to the *currently signed in user*, allowing you to perform operations based on the user making the request:
+
+```ts title="Example protected endpoint"
+// Sample protected endpoint - only signed in users can run.
+const sampleEndpoint = protectedProcedure
+  .mutation(async ({ ctx }) => {
+    // We can extract the currently signed in user, the **subject**,
+    // from the `ctx` object provided.
+    const { subject } = ctx;
+    // From here, we can do something based on the user's id.
+    const userId = subject.id;
+    // ...
+  });
+```
+
+We also use [Zod](https://trpc.io/docs/server/validators) for data valization with tRPC, providing a robust way for tRPC to verify that API inputs and outputs are typed correctly. I recommend taking a look at the linked documentation and the defined Zod models in the `/server/models/` directory. Zod models are *objects* rather than types. We can pass in Zod models into a tRPC procedure to specify its input and output types:
+
+```ts title="Zod Models - defined in /server/models"
+// Define an input and output type
+export const InputModel = z.object({
+  userId: z.number()
+});
+
+export const OutputModel = z.object({
+  name: z.string(),
+  age: z.number().min(0).max(120)
+})
+```
+
+```ts title="Defining Procedure I/O types"
+const getUser = publicProcedure
+  .input(InputModel)
+  .output(OutputModel)
+  .mutation(async ({ input }) => {
+    // The `input` object is guaranteed to be in the shape of the
+    // `InputModel` object, so it should have a `userId` field.
+    const { userId } = input;
+    // Using this, we can then query from the database.
+    const result = await db.query.usersTable.findFirst({
+      where: eq(usersTable.id, userId),
+      columns: {
+        name: true,
+        age: true
+      }
+    });
+    // Then, we can output our result. We use `OutputModel.parse()` to properly
+    // validate that our output type is in fact in the shape of `OutputModel`.
+    return OutputModel.parse(result);
+  });
+```
+
+```tsx title="Calling the API on the frontend"
+export default function ExampleComponent() {
+
+  const exampleInput = { userId: 8 };
+  // When we pass in `exampleInput` into the `useQuery` function as input,
+  // we will get an error if `exampleInput` does not match the `InputModel`.
+  const { data: user } = api.users.getUser.useQuery(exampleInput);
+  
+  // When we recieve data from the API, it is guaranteed that the data will
+  // be in the same shape as defined in `OutputModel`. So, it will have
+  // the fields "name" and "age".
+  if (user) return <>{ user.name }</>;
+  return <>Loading...</>;
+}
+
+```
 
 ## Getting Started
 
 To get started on this assignment, please complete the following steps:
 
-1. Accept the **GitHub Classroom** assignment [here](). *This is an indidivual assignment so that everyone is able to practice using the tools we have introduced recently in class*.
+1. Accept the **GitHub Classroom** assignment [here](https://classroom.github.com/a/XFHf0xWZ). *This is an indidivual assignment so that everyone is able to practice using the tools we have introduced recently in class*.
 2. Clone the repository to your local machine. You can either do this by:
     - Using the CLI / Terminal: `git clone <repository-url>`
     - Using [GitHub Desktop](https://desktop.github.com/download/): Click on the green "Code" button and select "Open with GitHub Desktop".
@@ -208,7 +269,7 @@ To get started on this assignment, please complete the following steps:
 
 Now that you have a Supabase account, if you are new to Supabase, you will be prompted to create a new organization. You can name your organization anything you like. Make sure that your plan is set to the Free tier, as shown below:
 
-![Supabase Free Plan](/images/a05/organization.png)
+![supabase-org](/images/assignments/a05/supabase-org.png)
 
 
 Press "Create organization". Once you have an organization, you can create your project for a05.
@@ -240,16 +301,83 @@ I recommend spending at least 20 minutes exploring the codebase and understandin
 
 ## Implementing Functionality
 
-Since the frontend and most of the frontend functions have been handled for you, the main code you need to complete for A05 will be:
-- Adding the functionality for *logging in* and *signing up* users.
-    1. Complete the `TODO` items in the `login.tsx` and `signup.tsx` pages. To do this, you might need to refer to Part 4 of [these docs](https://supabase.com/docs/guides/auth/server-side/nextjs?queryGroups=router&router=pages) for an example on how to set up the login and signup functions.
-- Complete all of the API endpoints in `/server/api/routers` so that our app can interact with the database. ***This is the bulk of the assignment!***
-    1. Complete the `TODO` items in `/server/api/routers/posts.ts` and `/server/api/routers/profiles.ts`. These files contain all of the Drizzle functionality necessary to interact with the `post` and `profile` tables in your Supabase database. You will need to complete these queries to allow users to post, like posts, follow users, and more. The functions, descriptions on expectations, and expected return types are all provided in the file. Pay careful attention to these and the comments in the file to understand what you need to do.
-    2. NOTE: ***NEVER*** modify the files in the `/server/models` folder! Doing so might break the frontend.
-    3. As you develop these functions, you can test them incrementally to see if you are getting the output you are expecting in the `testing.tsx` page.
-- Implement *infinite scrolling* for data on the home page and the profile feed page using `useInfiniteQuery`. This will allow users to scroll through posts infinitely without needing to click a "Load More" button and is a hallmark feature for most social media apps.
-    1. Complete the `TODO` item in `index.tsx`. The comments in the file will guide you on what you need to do.
-- Double check all work is completed by searching for `TODO` workspace-wide! If it is all completed, test the implementation on the frontend. You can test the login and signup functionality by creating a new account and logging in. You can test the posting functionality by creating a new post. You can test the liking functionality by liking a post. You can test the following functionality by following a user. You can test the infinite scrolling functionality by scrolling through the home page and profile feed page.
+Since the frontend and most of the frontend functions have been handled for you, the main code you need to complete for A05 are organized into the steps below:
+
+### Step 1: Create the Database Schema
+
+Your first task will be creating the database schema for Oriole! You will complete the `TODO` comments in the `/server/db/schema.ts` file. You will create four database tables according to the specifications, as well as the relations that connect these tables. Detailed instructions for setting this up are provided. I also recommend checking out the following resources:
+
+- [**RD06: Drizzle Crash Course**](https://comp426-25f.github.io/readings/r06-drizzle)
+- [**Setting up Foreign Keys in a Drizzle Table**](https://orm.drizzle.team/docs/indexes-constraints#foreign-key)
+- [**Configuring Relationships in Drizzle**](https://orm.drizzle.team/docs/relations#one-to-many)
+
+Once you have completed all of your database tables, you will want to *push* this schema to Supabase so that the Supabase database matches the schema you created! To do this, you will run the following command:
+
+```bash
+npx drizzle-kit push
+```
+
+Then, navigate to the **Supabase dashboard** for your project. Find the "Database" tab and press on "Schema Visualizer". You should see the following schema diagram:
+
+![schema-diagram](/images/assignments/a05/schema-diagram.png)
+
+If the fields in your database, including the annotations, match this exactly, you are good to go to the next steps!
+
+### Step 2: Adding Log In / Sign Up Functionality
+
+Next, you will add the functionality for handling log ins and sign ups in Oriole. To do this, complete the `TODO` items in `/pages/login.tsx` and `/pages/signup.tsx`. 
+
+To do this, check out **Step 4** of [these docs](https://supabase.com/docs/guides/auth/server-side/nextjs?queryGroups=router&router=pages), showing the exact `supabase.auth` functions to call for both signing in (logging in) and signing up!
+
+### Step 3: Complete the API Endpoints
+
+This is the bulk of Oriole. Complete all of the `TODO` items in `/server/api/routers/posts.ts` and `/server/api/routers/profiles.ts`. These files contain all of the Drizzle functionality necessary to interact with the `post` and `profile` tables in your Supabase database. You will need to complete these queries to allow users to post, like posts, follow users, and more. The functions, descriptions on expectations, and expected return types are all provided in the file. Pay careful attention to these and the comments in the file to understand what you need to do.
+
+<Callout type="yellow">
+**NOTE:**<br />
+*NEVER* modify the files in the `/server/models` folder! Doing so might break the frontend.
+</Callout>
+
+As you develop these functions, you can test them incrementally to see if you are getting the output you are expecting in the `testing.tsx` page.
+
+To test out *query* endpoints:
+
+```tsx title="Testing out a query endpoint"
+export default function Testing() {
+
+  const { data } = api.router.endpoint.useQuery(input);
+
+  // Example: if you wanted to test the `getFeed` endpoint, you would
+  // call: api.posts.getFeed.useQuery();
+
+  // Do something below with the data!
+}
+```
+
+```tsx title="Testing out a mutation endpoint"
+export default function Testing() {
+
+  const { mutate } = api.router.endpoint.useMutation();
+  
+  return <Button onClick={() => {
+    mutate(input);
+  }}>Test</Button>;
+
+  // Example: if you wanted to test the `createPost` endpoint, you would
+  // create a mutation function: 
+  // const { mutate } = api.posts.createPost.useMutation();
+  // Then, to call the endpoint, call the mutation!
+  // mutate(newPostObject);
+}
+```
+
+### Step 4: Implement Infinite Scrolling
+
+Complete the `TODO` item in `index.tsx`. The comments in the file will guide you on what you need to do. Infinite scrolling is a very common feature of social media apps, where you load chunks of your feed at a time as you scroll. The next chunk of your feed is loaded when you scroll near the end of your feed and is appended to the bottom of your feed.
+
+### Wrapping Up
+
+Double check all work is completed by searching for `TODO` workspace-wide! If it is all completed, test the implementation on the frontend. You can test the login and signup functionality by creating a new account and logging in. You can test the posting functionality by creating a new post. You can test the liking functionality by liking a post. You can test the following functionality by following a user. You can test the infinite scrolling functionality by scrolling through the home page and profile feed page.
 
 ## Deployment
 
