@@ -98,9 +98,10 @@ export default function MyComponent() {
 
     return (
         <div>
-            {isLoading ? <p>Loading...</p> : null}
-            {error ? <p>Error: {error.message}</p> : null}
-            {data ? <p>{data}</p> : null}
+            {isLoading && <p>Loading...</p>}
+            {!!error && <p>Error: {error.message}</p>}
+            {!!data && <p>{data}</p>}
+            {/* Note: !! on an object is used to ensure a value is not null / undefined.*/}
         </div>
     )
 }
