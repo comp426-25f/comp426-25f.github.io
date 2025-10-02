@@ -196,6 +196,8 @@ export const OutputModel = z.object({
 })
 ```
 
+These models specify to tRPC the exact format of the data that APIs should either accept as input or return as output.
+
 ```ts title="Defining Procedure I/O types"
 const getUser = publicProcedure
   .input(InputModel)
@@ -234,3 +236,4 @@ export default function ExampleComponent() {
 }
 
 ```
+
