@@ -1,0 +1,236 @@
+---
+code: R07
+title: Introducing tRPC for Typesafe APIs (A05 Pre-Reading)
+due: "2025-10-22T23:59:59-04:00"
+published: false
+authors:
+    - ajaygandecha
+---
+
+## Review of the Three-Tier Architecture
+
+In class, we have discussed the importance of using databases to store data for our web applications. ORMs such as Drizzle are great tools that we can use to interact with our databases from our TypeScript projects - allowing database operations to occur in response to actions taken on our websites.
+
+However, we have to be *very* careful with how we set up our apps to use ORMs. We do **not** want clients to have direct access to our database! By examining the website code the client recieves from the server, it is very possible to recover the database URL, *which would provide direct access to the database* and would be exploited by malicious users to read, modify, or delete data they are not authorized to access.
+
+![db-direct-connection](/images/assignments/a05/db-direct-connection.png)
+
+To solve this problem, we introduced the idea of **exposing API endpoints** from our server. Database operations (using Drizzle) are then only performed by the server and the code that performs these operations is *never sent to the client*. With database logic removed from the JS code the client recieves from the server, there is no way for a malicious user to recover the database URL or credentials. When our website is then loaded on the client's browser, the website can then make HTTP requests to these API endpoints to perform operations that require using the database:
+
+![three-tier](/images/assignments/a05/three-tier.png)
+
+This design pattern is known as the **three-tier architecture** and is the standard for how most web applications work. We let most of our application's business logic be performed by the server whenever a client requests for the work to be done by calling the necessary API.
+
+Remember that whenever we make an HTTP request, we pass along an *HTTP method* that provides information about the type of operation we are attempting to perform on an endpoint. These are:
+- **`GET`**: Used to retrieve data from the server.
+- **`POST`**: Used to create new resources on the server.
+- **`PUT`**: Used to update a resource on the server.
+- **`DELETE`**: Used to remove a specified resource from the server.
+
+So, in total, when we make HTTP requests, we supply both a *method* and an API endpoint specifying the action we want to take on a specific resource. For example:
+
+```mdx
+GET /api/books (Get all books in a library)
+POST /api/article (Create a new article)
+PUT /api/announcement/1 (Edit announcement #1)
+DELETE /api/pokemon/lucario (Remove Lucario from the list of Pokemon)
+```
+
+## Creating Standard API Endpoints in Next.js
+
+With Next.js, we can create API endpoints that can respond to HTTP requests. These endpoints are defined in `route.ts` files placed in the `/app/api` folder. Routes also use file-based routing, so the file path to `route.ts` determines the URL that a client must use to access the endpoint. For example, to create an API endpoint that responds to `GET /api/pokemon` requests, we would need to create a file at the route `app/api/pokemon/route.ts`, which would look like so:
+
+```ts title="app/api/pokemon/route.ts"
+export async function GET(request: NextRequest) {
+  // Load all Pokemon from the database.
+  const allPokemon = await db.query.pokemonTable.fetchMany();
+    
+  // Respond to the client with all Pokemon data in JSON format.
+  return Response.json({ allPokemon })
+}
+```
+
+To add an endpoint for `POST /api/pokemon`, since the route is the same as our previous request, we would add another async function called `POST` to the file above:
+
+```ts title="app/api/pokemon/route.ts"
+export async function GET(request: NextRequest) {
+  // Load all Pokemon from the database.
+  const allPokemon = await db.query.pokemonTable.fetchMany();
+    
+  // Respond to the client with all Pokemon data in JSON format.
+  return Response.json({ allPokemon })
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    // Parse the data that the user is trying to add.
+    const json = await request.json();
+    const data = json as known as Pokemon;
+
+    // Insert into database.
+    const [inserted] = await db
+      .insert(pokemonTable)
+      .values(data)
+      .returning({ id: pokemonTable.id });
+
+    // Respond with the ID of the created Pokemon.
+    return Response.json({ id: inserted.id });
+  } catch (err) {
+    // If there is an error, pass along the error to the user.
+    return Response.json({ error: "Failed to create Pokemon" }, { status: 500 });
+  }
+}
+```
+
+Now, to interact with these APIs from within our Next.js pages, we would need to make a `fetch` call like so:
+
+```ts title="Fetching all Pokemon"
+const response = await fetch("/api/pokemon");
+const json = await response.json();
+const pokemon = json as unknown as Pokemon[];
+```
+
+```ts title="Adding a Pokemon"
+const newPokemon: Pokemon = {
+  name: "Pikachu",
+  type: "Electric",
+};
+
+const response = await fetch("/api/pokemon", {
+  method: "POST",
+  body: JSON.stringify(newPokemon),
+});
+
+if (!response.ok) throw new Error("Failed to create Pokemon");
+
+const json = await response.json();
+const newPokemon = json as unknown as { id: string };
+```
+
+While this approach *works*, there are a new problems. First, using this approach to create APIs often leads us with an incredibly messy file structure that is very hard to parse. Most importantly though, **managing types becomes very difficult** - we lose type safety!
+
+In particular, notice the final example with creating a new Pokemon, defined in the variable `newPokemon` which is of type `Pokemon`. In order to pass it to the API, we have to *convert the object into raw JSON* to send over the network. Then, once the API recieves it, it recieves a *generic* JSON input. We need to cast this back to our *Pokemon* type. We then add the Pokemon to the database and return the Pokemon's ID. This object has to be converted back into JSON to be sent over the network. When the client recieves the response, we again re-cast it to the correct type.
+
+## Why tRPC?
+
+The main problem here is that to cross the client-server boundary, our data has to be converted back and forth from JSON to typed TypeScript objects. We must cast these values every time, since the result of `result.json()` is always an `any` JSON type. Type casting is determined at *runtime*, not at *build time*, meaning that we have no way of verifying that our type conversions are sound until our program runs. 
+
+This makes us lose our foundational TypeScript-provided benefits of type safety and static typing here! In larger projects with dozens of API endpoints and dozens of data types, this becomes very difficult to manage in our codebase, leading us to muddy up our logic with type casts and extra type definitions.
+
+Even worse, since static typing benefits are lost, if we happen to change the data types expected to be the input or output type of an API, type errors and IDE hints do not appear across our code where we use the API. This causes us slip back into the wild world of JavaScript's weakly-typed programming which we seek to avoid.
+
+This is where [**tRPC**](https://trpc.io/docs) comes in! tRPC is a framework that allows us to build *typesafe* APIs in TypeScript. It accomplishes this using the *Remote Procedure Call (RPC)* architectural style, essentially allowing client-side code to call functions on the server as if they are local functions (this architectural style is discussed in *COMP 533: Distributed Systems* and its implementation details are beyond our scope for this class). 
+
+tRPC defines API endpoints using **procedures**. Procedures can either be *queries* (analogous to a `GET` API endpoint) or *mutations* (analogous to `POST` / `PUT` / `DELETE` endpoints). Procedures are easy to define like so:
+
+```ts title="server/api/routers/pokemon.ts"
+const getPokemon = publicProcedure
+  .output(Pokemon.array())
+  .query(async () => {
+    const result = await db.query.pokemonTable.fetchMany();
+    return Post.array().parse(result);
+  });
+```
+
+Multiple procedures are then combined into a *router*, which specifies a specific collection of APIs. For example, we could create a Pokemon router that contains related procedures for interacting with Pokemon data:
+
+```ts title="server/api/routers/pokemon.ts"
+export const pokemonApiRouter = createTRPCRouter({
+  getPokemon: getPokemon,
+  addPokemon: addPokemon
+});
+```
+
+All of the routers in our application are combined into one final App Router:
+
+```ts title="server/api/routers/root.ts"
+export const appRouter = createTRPCRouter({
+  pokemon: pokemonApiRouter,
+});
+```
+
+Then, on the frontend, we can use our API directly like so:
+
+```tsx title="some-component.tsx"
+// We can call an API in the format of: api.apirouter.procedure.useQuery()
+const { data: pokemon } = api.pokemon.getPokemon.useQuery();
+// Yes - in fact, tRPC allows us to use the `useQuery` hook directly!
+// Everything is taken care of for us - we do not need to supply
+// query keys or a query function.
+```
+
+From our frontend, `data` is automatically typed as `Pokemon[]`! In addition, all inputs and outputs for procedures are strongly typed - no type casting is ever necessary between the client-side and server-side code.
+
+The developer experience (DX) of tRPC is unparalleled. For this reason, tRPC has over **39k stars on GitHub** and is used in industry by large software companies including *Google*, *Netflix*, *PayPal*, and more.
+
+## tRPC in Oriole
+
+**a05: Oriole** is set up to use tRPC, and you will be implementing API functionality. All server-side code can be found in the `/server` directory of the project. You can find two routers, one for `post` and `profile` data respectively, in the `/server/api/routers` folder. You will also notice that two types of procedure stems - `publicProcedure` and `protectedProcedure` - are used in these API definitions. The APIs defined using `publicProcedure` can be used by any user. The APIs defined by `protectedProcedure` are restricted to authenticated users only. The logic to validate user's authentication status has already been completed for you.
+
+For `protectedProcedure` routes, you are able to access a context (`ctx` variable) as part of the input for the procedure function. One of the values passed in as part of the context is the **subject**, which is of type `Subject`. The subject refers to the *currently signed in user*, allowing you to perform operations based on the user making the request:
+
+```ts title="Example protected endpoint"
+// Sample protected endpoint - only signed in users can run.
+const sampleEndpoint = protectedProcedure
+  .mutation(async ({ ctx }) => {
+    // We can extract the currently signed in user, the **subject**,
+    // from the `ctx` object provided.
+    const { subject } = ctx;
+    // From here, we can do something based on the user's id.
+    const userId = subject.id;
+    // ...
+  });
+```
+
+We also use [Zod](https://trpc.io/docs/server/validators) for data validation with tRPC, providing a robust way for tRPC to verify that API inputs and outputs are typed correctly. I recommend taking a look at the linked documentation and the defined Zod models in the `/server/models/` directory. Zod models are *objects* rather than types. We can pass in Zod models into a tRPC procedure to specify its input and output types:
+
+```ts title="Zod Models - defined in /server/models"
+// Define an input and output type
+export const InputModel = z.object({
+  userId: z.number()
+});
+
+export const OutputModel = z.object({
+  name: z.string(),
+  age: z.number().min(0).max(120)
+})
+```
+
+```ts title="Defining Procedure I/O types"
+const getUser = publicProcedure
+  .input(InputModel)
+  .output(OutputModel)
+  .mutation(async ({ input }) => {
+    // The `input` object is guaranteed to be in the shape of the
+    // `InputModel` object, so it should have a `userId` field.
+    const { userId } = input;
+    // Using this, we can then query from the database.
+    const result = await db.query.usersTable.findFirst({
+      where: eq(usersTable.id, userId),
+      columns: {
+        name: true,
+        age: true
+      }
+    });
+    // Then, we can output our result. We use `OutputModel.parse()` to properly
+    // validate that our output type is in fact in the shape of `OutputModel`.
+    return OutputModel.parse(result);
+  });
+```
+
+```tsx title="Calling the API on the frontend"
+export default function ExampleComponent() {
+
+  const exampleInput = { userId: 8 };
+  // When we pass in `exampleInput` into the `useQuery` function as input,
+  // we will get an error if `exampleInput` does not match the `InputModel`.
+  const { data: user } = api.users.getUser.useQuery(exampleInput);
+  
+  // When we recieve data from the API, it is guaranteed that the data will
+  // be in the same shape as defined in `OutputModel`. So, it will have
+  // the fields "name" and "age".
+  if (user) return <>{ user.name }</>;
+  return <>Loading...</>;
+}
+
+```
