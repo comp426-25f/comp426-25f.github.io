@@ -129,7 +129,7 @@ In particular, notice the final example with creating a new Pokemon, defined in 
 
 The main problem here is that to cross the client-server boundary, our data has to be converted back and forth from JSON to typed TypeScript objects. We must cast these values every time, since the result of `result.json()` is always an `any` JSON type. Type casting is determined at *runtime*, not at *build time*, meaning that we have no way of verifying that our type conversions are sound until our program runs. 
 
-This makes us lose our foundational TypeScript-provided benefits of type safety and static typing here! In larger projects with dozens of API endpoint and dozens of data types, this becomes very difficult to manage in our codebase, leading us to muddy up our logic with type casts and extra type definitions.
+This makes us lose our foundational TypeScript-provided benefits of type safety and static typing here! In larger projects with dozens of API endpoints and dozens of data types, this becomes very difficult to manage in our codebase, leading us to muddy up our logic with type casts and extra type definitions.
 
 Even worse, since static typing benefits are lost, if we happen to change the data types expected to be the input or output type of an API, type errors and IDE hints do not appear across our code where we use the API. This causes us slip back into the wild world of JavaScript's weakly-typed programming which we seek to avoid.
 
@@ -146,7 +146,7 @@ const getPokemon = publicProcedure
   });
 ```
 
-Multiple pocedures are then combined into a *router*, which specifies a specific collection of APIs. For example, we could create a Pokemon router that contains related procedures for interacting with Pokemon data:
+Multiple procedures are then combined into a *router*, which specifies a specific collection of APIs. For example, we could create a Pokemon router that contains related procedures for interacting with Pokemon data:
 
 ```ts title="server/api/routers/pokemon.ts"
 export const pokemonApiRouter = createTRPCRouter({
@@ -163,7 +163,7 @@ export const appRouter = createTRPCRouter({
 });
 ```
 
-Then, on the frontend, we can use our API diretly like so:
+Then, on the frontend, we can use our API directly like so:
 
 ```tsx title="some-component.tsx"
 const { data: pokemon } = api.pokemon.getPokemon.useQuery();
@@ -195,7 +195,7 @@ const sampleEndpoint = protectedProcedure
   });
 ```
 
-We also use [Zod](https://trpc.io/docs/server/validators) for data valization with tRPC, providing a robust way for tRPC to verify that API inputs and outputs are typed correctly. I recommend taking a look at the linked documentation and the defined Zod models in the `/server/models/` directory. Zod models are *objects* rather than types. We can pass in Zod models into a tRPC procedure to specify its input and output types:
+We also use [Zod](https://trpc.io/docs/server/validators) for data validation with tRPC, providing a robust way for tRPC to verify that API inputs and outputs are typed correctly. I recommend taking a look at the linked documentation and the defined Zod models in the `/server/models/` directory. Zod models are *objects* rather than types. We can pass in Zod models into a tRPC procedure to specify its input and output types:
 
 ```ts title="Zod Models - defined in /server/models"
 // Define an input and output type
@@ -276,7 +276,7 @@ Press "Create organization". Once you have an organization, you can create your 
 
 There are many steps you will need to create to fully configure your Supabase project. These steps are summarized in the video below. Follow along as I explain the setup process:
 
-<ResponsiveIFrame src={'https://www.youtube.com/embed/OrliU0e09io?si=jbPTzbda-QfJu0_-' } />
+<ResponsiveIFrame src={'https://youtu.be/Pm6YH5sjMOc' } />
 
 By the conclusion of following along with the video, you should have:
 
