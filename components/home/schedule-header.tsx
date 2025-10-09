@@ -16,6 +16,7 @@ export function ScheduleHeader() {
         {legendItem('lightblue', 'Fundamentals')}
         {legendItem('blue', 'React')}
         {legendItem('purple', 'Next.js')}
+        {legendItem('green', 'Backend')}
         {/* {legendItem('blue', 'React')}
         {legendItem('purple', 'Next.js')}
         {legendItem('green', 'Backend')}
