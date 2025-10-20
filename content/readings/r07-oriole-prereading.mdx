@@ -9,13 +9,13 @@ authors:
 
 ## Review of the Three-Tier Architecture
 
-In class, we have discussed the importance of using databases to store data for our web applications. ORMs such as Drizzle are great tools that we can use to interact with our databases from our TypeScript projects - allowing database operations to occur in response to actions taken on our websites.
+In class, we have discussed the importance of using databases to store data for our web applications. ORMs such as Drizzle are great tools that we can use to interact with our databases from our TypeScript projects - allowing database operations to occur in response to user-initiated actions on our websites.
 
-However, we have to be *very* careful with how we set up our apps to use ORMs. We do **not** want clients to have direct access to our database! By examining the website code the client recieves from the server, it is very possible to recover the database URL, *which would provide direct access to the database* and would be exploited by malicious users to read, modify, or delete data they are not authorized to access.
+However, we have to be *very* careful with how we set up our apps to use ORMs. We do **not** want clients to have direct access to our database! By examining the website code the client receives from the server, it is possible to recover the database URL, *which would provide direct access to the database* and would be exploited by malicious users to read, modify, or delete data they are not authorized to access.
 
 ![db-direct-connection](/images/assignments/a05/db-direct-connection.png)
 
-To solve this problem, we introduced the idea of **exposing API endpoints** from our server. Database operations (using Drizzle) are then only performed by the server and the code that performs these operations is *never sent to the client*. With database logic removed from the JS code the client recieves from the server, there is no way for a malicious user to recover the database URL or credentials. When our website is then loaded on the client's browser, the website can then make HTTP requests to these API endpoints to perform operations that require using the database:
+To solve this problem, we introduced the idea of **exposing API endpoints** from our server. Database operations (using Drizzle) are then only performed by the server and the code that performs these operations is *never sent to the client*. With database logic removed from the JS code the client receives from the server, there is no way for a malicious user to recover the database URL or credentials. When our website is then loaded on the client's browser, the website can then make HTTP requests to these API endpoints to perform operations that require using the database:
 
 ![three-tier](/images/assignments/a05/three-tier.png)
 
@@ -141,7 +141,7 @@ export const pokemonApiRouter = createTRPCRouter({
 });
 ```
 
-All of the routers in our application are combined into one final App Router:
+Finally, all routers are combined into one final App Router, which contains all of our API endpoints.
 
 ```ts title="server/api/routers/root.ts"
 export const appRouter = createTRPCRouter({
