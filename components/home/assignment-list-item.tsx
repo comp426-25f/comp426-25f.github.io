@@ -23,9 +23,7 @@ export function AssignmentListItem({ item }: { item: AssignmentListItemType }) {
       onClick={() => router.push(`/${item._raw.flattenedPath}`)}>
       <AssignmentBadge code={item.code} />
       <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full">
-        <p className="font-semibold pb-0.5 overflow-hidden text-ellipsis whitespace-nowrap">
-          {item.title}
-        </p>
+        <p className="font-semibold pb-0.5">{item.title}</p>
         {item.due && (
           <DueText
             itemDueStatus={itemDueStatus}
