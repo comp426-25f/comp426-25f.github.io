@@ -1,7 +1,7 @@
 ---
 code: A05
 title: Oriole
-due: "2025-10-29T23:59:59-04:00"
+due: "2025-10-31T23:59:59-04:00"
 published: false 
 ---
 
@@ -19,13 +19,13 @@ If you have not already, please install the Docker DevContainers extension for V
 
 Install here: [Docker DevContainers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-**In addition, please be sure to complete the ([R07 pre-reading](/readings/r07-oriole-prereading)) before starting this assignment.**
+**In addition, please be sure to complete the ([Pre-Reading](/readings/r07-oriole-prereading)) before starting this assignment.**
 
 ## Getting Started
 
 To get started on this assignment, please complete the following steps:
 
-1. Accept the **GitHub Classroom** assignment [here](https://classroom.github.com/a/XFHf0xWZ). *This is an indidivual assignment so that everyone is able to practice using the tools we have introduced recently in class*.
+1. Accept the **GitHub Classroom** assignment [here](https://classroom.github.com/a/wMxc6LDI). *This is an individual assignment so that everyone is able to practice using the tools we have introduced recently in class*.
 2. Clone the repository to your local machine. You can either do this by:
     - Using the CLI / Terminal: `git clone <repository-url>`
     - Using [GitHub Desktop](https://desktop.github.com/download/): Click on the green "Code" button and select "Open with GitHub Desktop".
@@ -76,15 +76,11 @@ I recommend spending at least 20 minutes exploring the codebase and understandin
 
 Since the frontend and most of the frontend functions have been handled for you, the main code you need to complete for A05 are organized into the steps below:
 
-### Step 1: Create the Database Schema
+### Step 1: Push the Database Schema
 
-Your first task will be creating the database schema for Oriole! You will complete the `TODO` comments in the `/server/db/schema.ts` file. You will create four database tables according to the specifications, as well as the relations that connect these tables. Detailed instructions for setting this up are provided. I also recommend checking out the following resources:
+Your first task is to read over Oriole's database schema, which has been pre-defined for you! 
 
-- [**RD06: Drizzle Crash Course**](https://comp426-25f.github.io/readings/r06-drizzle)
-- [**Setting up Foreign Keys in a Drizzle Table**](https://orm.drizzle.team/docs/indexes-constraints#foreign-key)
-- [**Configuring Relationships in Drizzle**](https://orm.drizzle.team/docs/relations#one-to-many)
-
-Once you have completed all of your database tables, you will want to *push* this schema to Supabase so that the Supabase database matches the schema you created! To do this, you will run the following command:
+Once you have read through the schema, you will want to *push* this schema to Supabase so that the Supabase database matches the schema in your project. To do this, you will run the following command:
 
 ```bash
 npx drizzle-kit push
@@ -95,6 +91,8 @@ Then, navigate to the **Supabase dashboard** for your project. Find the "Databas
 ![schema-diagram](/images/assignments/a05/schema-diagram.png)
 
 If the fields in your database, including the annotations, match this exactly, you are good to go to the next steps!
+
+If these steps fail, delete **all** tables in the Database tab of Supabase, check your configuration, and try again. If you are experiencing issues, please come to office hours.
 
 ### Step 2: Adding Log In / Sign Up Functionality
 
