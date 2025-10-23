@@ -104,7 +104,7 @@ const response = await fetch("/api/pokemon", {
 if (!response.ok) throw new Error("Failed to create Pokemon");
 
 const json = await response.json();
-const newPokemon = json as unknown as { id: string };
+const createdPokemon = json as unknown as { id: string };
 ```
 
 While this approach *works*, there are new problems. First, using this approach to create APIs often leads us with an incredibly messy file structure that is very hard to parse. Most importantly though, **managing types becomes very difficult** - we lose type safety!
