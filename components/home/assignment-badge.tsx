@@ -5,6 +5,8 @@ export function AssignmentBadge({ code }: { code: string }) {
     ? 'green'
     : code.startsWith('A')
     ? 'pink'
+    : code.startsWith('F')
+    ? 'purple-solid'
     : 'default';
 
   return <ColoredBadge text={code} color={color} />;
