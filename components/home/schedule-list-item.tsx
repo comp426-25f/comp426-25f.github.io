@@ -30,8 +30,9 @@ export function ScheduleListItem({ item }: { item: ScheduleItem }) {
                 <Button
                   asChild
                   variant="ghost"
+                  disabled={item.recordingUrl === 'hidden'}
                   size="sm"
-                  className="hidden md:inline-flex">
+                  className={cn("hidden md:inline-flex", item.recordingUrl === 'hidden' ? 'hover:cursor-default text-foreground/30 hover:text-foreground/30 hover:bg-background!' : '')}>
                   <Link href={item.recordingUrl} target="_blank">
                     Recording
                   </Link>
@@ -40,7 +41,8 @@ export function ScheduleListItem({ item }: { item: ScheduleItem }) {
                   asChild
                   variant="link"
                   size="sm"
-                  className="md:hidden h-5 px-0 hover:underline hover:cursor-pointer">
+                  disabled={item.recordingUrl === 'hidden'}
+                  className={cn("md:hidden h-5 px-0 hover:underline hover:cursor-pointer", item.recordingUrl === 'hidden' ? 'hover:cursor-default text-foreground/30 hover:text-foreground/30 hover:bg-background!' : '')}>
                   <Link href={item.recordingUrl} target="_blank">
                     Recording
                   </Link>
