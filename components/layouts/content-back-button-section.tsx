@@ -2,8 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { useHomepage } from '@/hooks/use-homepage';
+import { useShowcase } from '@/hooks/use-showcase';
 import { cn } from '@/lib/utils';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Home, House } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ContentLayoutBackButtonSection({
@@ -11,9 +12,9 @@ export default function ContentLayoutBackButtonSection({
 }: {
   showToc?: boolean;
 }) {
-  const { isHomepage: hideBackButton } = useHomepage();
-
-  if (hideBackButton) return null;
+  const { isHomepage } = useHomepage();
+  const { isShowcase } = useShowcase();
+  if (isHomepage) return null;
 
   return (
     <aside
@@ -22,10 +23,17 @@ export default function ContentLayoutBackButtonSection({
         showToc ? 'w-[200px] lg:min-w-[100px] xl:min-w[200px]' : ''
       )}>
       <Button variant="ghost" asChild className="absolute top-0 right-0">
-        <Link href="/">
-          <ChevronLeft className="size-4" />
-          Back
-        </Link>
+        { isShowcase ? (
+            <Link href="/home">
+            <House className="size-4 text-muted-foreground" />
+            </Link>
+          ) : (
+            <Link href="/">
+              <ChevronLeft className="size-4" />
+              Back
+            </Link>
+          )
+        }
       </Button>
     </aside>
   );

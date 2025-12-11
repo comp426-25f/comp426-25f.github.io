@@ -27,6 +27,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
+import ShowcaseList from '../showcase/showcase-list';
 
 const components: MDXComponents = {
   h1: ({ className, ...props }) => (
@@ -192,7 +193,8 @@ const components: MDXComponents = {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger
+  AccordionTrigger,
+  ShowcaseList
 };
 
 interface MdxProps {
