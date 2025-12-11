@@ -42,7 +42,7 @@ export default function ShowcaseList() {
         {title: "Swiped", url: "https://swipedunc.vercel.app/",  github: "https://github.com/comp426-25f/final-project-team-37/blob/8817617a21b9099fee37931d40a1be8b90d9d558/README.md"},
         {title: "Bookish", url: "https://final-project-team-38-bow2.vercel.app/",  github: "https://github.com/comp426-25f/final-project-team-38/blob/b3fcbb15e35ac2f6d20c11d901e8ec12ce23f94f/README.md"},
         {title: "UNC MarketPlace", url: "https://final-project-team-39-mu.vercel.app/",  github: "https://github.com/comp426-25f/final-project-team-39/blob/main/README.md"},
-        {title: "Anisha Musti", url: "https://study-sync-seven-phi.vercel.app/login",  github: "https://github.com/comp426-25f/final-project-team-40"},
+        {title: "StudySync", url: "https://study-sync-seven-phi.vercel.app/login",  github: "https://github.com/comp426-25f/final-project-team-40"},
         {title: "BiteBook", url: "https://final-project-41-omega.vercel.app/",  github: "https://github.com/comp426-25f/final-project-41/blob/f9f6a342adf05427388ed021d773f92b106a4187/README.md"},
         {title: "StudyBuddy", url: "https://final-project-team-42.vercel.app",  github: "https://github.com/comp426-25f/final-project-team-42/blob/main/README.md"},
         {title: "Pickpal", url: "https://pickpal-team43.vercel.app/",  github: "https://github.com/comp426-25f/final-project-team-43/blob/main/README.md"},

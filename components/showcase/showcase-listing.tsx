@@ -18,7 +18,7 @@ export default function ShowcaseListing({
   winner,
   teamNumber
 }: ShowcaseListing & React.ComponentProps<"div"> & { teamNumber: number }) {
-  return <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between w-full first:border-t border-b border-gray-200 py-3">
+  return <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between w-full first:border-t border-b border-muted-foreground py-3">
     <div className="flex flex-row items-center gap-4">
         <img src={`/images/showcase/${teamNumber}.png`} className="rounded-lg h-[60px] w-[60px] object-contain" alt={title} width={60} height={60} />
         <div className="flex flex-col">
@@ -34,7 +34,7 @@ export default function ShowcaseListing({
                     </Badge>
                 ) }
             </div>
-            <p className="text-sm text-gray-500">Team {teamNumber}</p>
+            <p className="text-sm text-muted-foreground">Team {teamNumber}</p>
         </div>
     </div>
     <div className="flex flex-row gap-3">
