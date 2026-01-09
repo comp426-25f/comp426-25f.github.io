@@ -4,11 +4,12 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import type { Element } from 'hast';
-import { allContentTypes } from './content/config/types';
+import { allContentTypes, allNestedTypes } from './content/config/types';
 
 export default makeSource({
   contentDirPath: './content',
   documentTypes: allContentTypes,
+  nestedTypes: allNestedTypes,
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

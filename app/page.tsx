@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 // To reverse this, simply delete this file
 export default function HomePage() {
   const router = useRouter();
-  
+
   useEffect(() => {
-    router.replace('/project-showcase');
+    router.replace('/wrapped');
   }, [router]);
 
   // Return null or a loading state while redirecting

@@ -4,7 +4,7 @@ import { allAuthors } from 'contentlayer/generated';
 import { cn, createCommaSeparatedListText } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useHomepage } from '@/hooks/use-homepage';
-import { useShowcase } from '@/hooks/use-showcase';
+import { useShowcase, useWrapped } from '@/hooks/use-showcase';
 
 interface DocsPageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -20,7 +20,7 @@ export function ContentHeader({
   ...props
 }: DocsPageHeaderProps) {
   const { isHomepage } = useHomepage();
-  const { isShowcase } = useShowcase();
+  const { isWrapped } = useWrapped();
 
   const authorData = !!authors
     ? authors
@@ -52,26 +52,8 @@ export function ContentHeader({
               Modern Web Programming
             </h1>
           </>
-        ) : isShowcase ? (
-          <>
-            <h1
-              className={cn(
-                'inline-block font-heading',
-                'text-3xl md:text-4xl'
-              )}>
-              COMP 426
-            </h1>
-            <br />
-            <h1
-              className={cn(
-                'inline-block font-heading',
-                'text-4xl md:text-5xl'
-              )}>
-              Final Project Showcase
-            </h1>
-          </>
         ) : (
-        <h1
+          <h1
             className={cn(
               'inline-block font-heading mt-2',
               'text-4xl md:text-5xl'

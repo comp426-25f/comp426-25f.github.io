@@ -8,3 +8,10 @@ export function useShowcase() {
 
   return { isShowcase };
 }
+
+export function useWrapped() {
+  const pathname = usePathname();
+  const isWrapped = pathname === '/wrapped';
+
+  return { isWrapped };
+}

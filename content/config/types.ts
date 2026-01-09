@@ -1,6 +1,7 @@
 // Note: This import must not be aliased using @/ because it is used
 // by contentlayer, which runs from a different bundle.
 import { defineContentType } from '../../lib/contentlayer';
+import { defineNestedType } from 'contentlayer2/source-files';
 
 
 export const Page = defineContentType({
@@ -150,6 +151,20 @@ export const Author = defineContentType({
   }
 });
 
+export const RelatedCourse = defineNestedType(() => ({
+  name: 'RelatedCourse',
+  fields: {
+    code: {
+      type: 'string',
+      required: true
+    },
+    description: {
+      type: 'string',
+      required: true
+    }
+  }
+}));
+
 export const ScheduleItem = defineContentType({
   name: 'ScheduleItem',
   filePathPattern: `schedule/**/*.mdx`,
@@ -176,6 +191,13 @@ export const ScheduleItem = defineContentType({
     },
     slideshowUrl: {
       type: 'string'
+    },
+    synopsis: {
+      type: 'string'
+    },
+    relatedCourses: {
+      type: 'list',
+      of: RelatedCourse
     }
   }
 });
@@ -187,4 +209,8 @@ export const allContentTypes = [
   Supplement,
   Author,
   ScheduleItem
-]
+];
+
+export const allNestedTypes = [
+  RelatedCourse
+];
