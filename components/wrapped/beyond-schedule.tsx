@@ -136,7 +136,9 @@ function BeyondScheduleItem({ item }: { item: ScheduleItem }) {
         className={cn(
           'flex flex-row items-center gap-3 px-2 py-1 w-full transition-colors duration-50',
           getHoverColorClass(item.subject),
-          isHovered ? 'rounded-l-lg rounded-r-none' : 'rounded-md'
+          isHovered
+            ? 'rounded-l-lg rounded-r-lg md:rounded-r-none'
+            : 'rounded-md'
         )}>
         <ScheduleBadge item={item} />
         <div className="flex w-full flex-row md:flex-row md:items-center md:justify-between">
@@ -168,7 +170,11 @@ function BeyondScheduleItem({ item }: { item: ScheduleItem }) {
       {showPopup && (
         <div
           className={cn(
-            'absolute left-full top-1/2 -translate-y-1/2 ml-[-0.375rem] z-50 min-w-[300px] max-w-[400px]',
+            'absolute z-50 min-w-[300px] max-w-[400px]',
+            // Mobile: below the row
+            'top-full left-0 mt-2',
+            // Desktop: to the right of the row
+            'md:left-full md:top-1/2 md:-translate-y-1/2 md:ml-[-0.375rem] md:mt-0',
             'transition-opacity duration-150 ease-out',
             isHovered ? 'opacity-100' : 'opacity-0'
           )}>

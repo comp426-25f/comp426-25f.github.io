@@ -99,7 +99,7 @@ export default function AssignmentsGrid() {
     'bg-[#F1E1E9]/50 dark:bg-[#4a2a3d]/50 text-pink-950 dark:text-pink-100';
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-row gap-4 px-1 my-2">
+      <div className="flex flex-col md:flex-row gap-4 px-1 my-2">
         <p className="font-medium">Key: </p>
         <div className="flex flex-row gap-2 text-muted-foreground">
           <Badge>--</Badge>
