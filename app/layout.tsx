@@ -47,6 +47,9 @@ export default function RootLayout({
         )}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
+            <div><h1>This is the Fall 2025 COMP 426 Website.</h1> 
+                 <h2><a href="https://comp426-26f.github.io/home">See here for the current Fall 2026 website.</a></h2>
+          </div>
             <div className="container lg:px-0 xl:px-8 flex-1">{children}</div>
             <SiteFooter />
           </div>
